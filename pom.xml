@@ -101,8 +101,10 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
-               <!-- need to set anything otherwise we would use the parent project using the log manager which would fail here -->
-               <argLine>-Dtest=true</argLine>
+               <!--
+               Uncomment this one for profiling,
+                Run the test you like and use jmc (java -->
+               <!-- <argLine>-XX:+UnlockCommercialFeatures -XX:+FlightRecorder -XX:StartFlightRecording=duration=60s,filename=/work/tmp/recording.jfr -XX:FlightRecorderOptions=stackdepth=1000</argLine> -->
                <systemProperties>
                   <property>
                      <name>PN_TRACE_FRM</name>
