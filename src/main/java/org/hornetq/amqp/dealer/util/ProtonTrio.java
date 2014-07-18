@@ -140,12 +140,14 @@ public abstract class ProtonTrio
 
    /**
     * this method will change the readerIndex on bytes to the latest read position
+    *
+    * if returning false, you must retry the operation after some wait
     */
-   public void pump(ByteBuf bytes)
+   public boolean pump(ByteBuf bytes)
    {
       if (bytes.readableBytes() < 8)
       {
-         return;
+         return true;
       }
 
 
@@ -153,25 +155,24 @@ public abstract class ProtonTrio
       {
          synchronized (lock)
          {
-
-            final ByteBuffer input = transport.getInputBuffer();
-
             while (bytes.readerIndex() < bytes.writerIndex())
             {
-               int remaining = input.remaining();
-               if (remaining == 0)
+               int capacity = transport.capacity();
+               if (capacity <= 0)
                {
-                  System.err.println("Buffer full!!!");
-                  break;
+                  System.out.println("Capacity is zeroed!!");
+                  transport.process();
+                  checkSASL();
+                  dispatch();
+                  return false;
                }
-               int min = Math.min(remaining, bytes.readableBytes());
+
+               final ByteBuffer tail = transport.tail();
+               int min = Math.min(tail.remaining(), bytes.readableBytes());
                ByteBuffer tmp = bytes.internalNioBuffer(bytes.readerIndex(), min);
-               input.put(tmp);
-               if (!processBuffer())
-               {
-                  System.err.println("DEBUG This.. Process Buffer returned false!!!!!!!!!!!!!");
-                  break;
-               }
+               tail.put(tmp);
+               transport.process();
+               checkSASL();
                dispatch();
                bytes.readerIndex(bytes.readerIndex() + min);
             }
@@ -182,8 +183,9 @@ public abstract class ProtonTrio
          // After everything is processed we still need to check for more dispatches!
          dispatch();
       }
-   }
 
+      return true;
+   }
 
    private boolean processBuffer()
    {

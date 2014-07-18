@@ -142,6 +142,10 @@ public class MicroBenchmarkSimpleClientTest extends SimpleServerAbstractTest
       long taken = (System.currentTimeMillis() - time);
       System.out.println("Microbenchamrk ran in " + taken + " milliseconds, sending/receiving " + getNumberOfMessages() + " messages, while SASL = " + useSASL + ", inVM=" + this.useInVM);
 
+      double messagesPerSecond = ((double)getNumberOfMessages() / (double) taken) * 1000;
+
+      System.out.println(((int)messagesPerSecond) + " messages per second");
+
    }
 
 

@@ -73,7 +73,16 @@ public abstract class AbstractProtonConnection extends ProtonInitializable imple
    public void inputBuffer(ByteBuf buffer)
    {
       setDataReceived();
-      trio.pump(buffer);
+      while (!trio.pump(buffer))
+      {
+         try
+         {
+            Thread.sleep(500);
+         }
+         catch (Exception e)
+         {
+         }
+      }
    }
 
    public void flush()
@@ -159,10 +168,17 @@ public abstract class AbstractProtonConnection extends ProtonInitializable imple
 
    public void throttle()
    {
-      if (pendingWrites.getCount() > 5)
-      {
-         System.out.println("Pending on " + pendingWrites.getCount() + " pendingBytes = " + pendingBytes.get());
-      }
+//      if (pendingWrites.getCount() > 10)
+//      {
+//         try
+//         {
+//            System.out.println("Pending on " + pendingWrites.getCount() + " pendingBytes = " + pendingBytes.get());
+//            pendingWrites.await();
+//         }
+//         catch (Exception e)
+//         {
+//         }
+//      }
    }
 
    @Override
