@@ -135,7 +135,6 @@ public abstract class ProtonSession extends ProtonInitializable
       senders.clear();
       try
       {
-         new Exception ("Session.close").printStackTrace();
          if (sessionSPI != null)
          {
             sessionSPI.rollbackCurrentTX();
