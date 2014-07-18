@@ -29,8 +29,8 @@ import org.apache.qpid.proton.message.ProtonJMessage;
 import org.hornetq.amqp.dealer.exceptions.HornetQAMQPException;
 import org.hornetq.amqp.dealer.exceptions.HornetQAMQPInternalErrorException;
 import org.hornetq.amqp.dealer.logger.HornetQAMQPProtocolMessageBundle;
+import org.hornetq.amqp.dealer.protonimpl.AbstractProtonConnection;
 import org.hornetq.amqp.dealer.protonimpl.AbstractProtonSender;
-import org.hornetq.amqp.dealer.protonimpl.ProtonAbstractConnectionImpl;
 import org.hornetq.amqp.dealer.protonimpl.ProtonPlugSender;
 import org.hornetq.amqp.dealer.protonimpl.ProtonSession;
 import org.hornetq.amqp.dealer.spi.ProtonSessionSPI;
@@ -48,7 +48,7 @@ public class ProtonServerSenderImpl extends AbstractProtonSender implements Prot
 
    private Object brokerConsumer;
 
-   public ProtonServerSenderImpl(ProtonAbstractConnectionImpl connection, Sender sender, ProtonSession protonSession, ProtonSessionSPI server)
+   public ProtonServerSenderImpl(AbstractProtonConnection connection, Sender sender, ProtonSession protonSession, ProtonSessionSPI server)
    {
       super(connection, sender, protonSession, server);
    }

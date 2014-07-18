@@ -19,7 +19,7 @@ import org.hornetq.amqp.dealer.AMQPClientConnection;
 import org.hornetq.amqp.dealer.AMQPClientSession;
 import org.hornetq.amqp.dealer.SASL;
 import org.hornetq.amqp.dealer.exceptions.HornetQAMQPException;
-import org.hornetq.amqp.dealer.protonimpl.ProtonAbstractConnectionImpl;
+import org.hornetq.amqp.dealer.protonimpl.AbstractProtonConnection;
 import org.hornetq.amqp.dealer.protonimpl.ProtonInitializable;
 import org.hornetq.amqp.dealer.protonimpl.ProtonSession;
 import org.hornetq.amqp.dealer.spi.ProtonConnectionSPI;
@@ -30,7 +30,7 @@ import org.hornetq.amqp.dealer.util.FutureRunnable;
  * @author Clebert Suconic
  */
 
-public class ProtonClientConnectionImpl extends ProtonAbstractConnectionImpl implements AMQPClientConnection
+public class ProtonClientConnectionImpl extends AbstractProtonConnection implements AMQPClientConnection
 {
    public ProtonClientConnectionImpl(ProtonConnectionSPI connectionSPI)
    {

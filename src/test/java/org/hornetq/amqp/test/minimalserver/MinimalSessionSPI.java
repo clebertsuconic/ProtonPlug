@@ -37,16 +37,14 @@ public class MinimalSessionSPI implements ProtonSessionSPI
 
    String user;
    String password;
-   boolean transacted;
    ServerProtonSessionImpl session;
 
    @Override
-   public void init(ProtonSession session, String user, String passcode, boolean transacted)
+   public void init(ProtonSession session, String user, String passcode)
    {
       this.session = (ServerProtonSessionImpl)session;
       this.user = user;
       this.password = passcode;
-      this.transacted = transacted;
    }
 
    @Override

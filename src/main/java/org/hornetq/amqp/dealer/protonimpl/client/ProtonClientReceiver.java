@@ -25,8 +25,8 @@ import org.apache.qpid.proton.message.ProtonJMessage;
 import org.apache.qpid.proton.message.impl.MessageImpl;
 import org.hornetq.amqp.dealer.AMQPClientReceiver;
 import org.hornetq.amqp.dealer.exceptions.HornetQAMQPException;
-import org.hornetq.amqp.dealer.protonimpl.ProtonAbstractConnectionImpl;
-import org.hornetq.amqp.dealer.protonimpl.ProtonAbstractReceiver;
+import org.hornetq.amqp.dealer.protonimpl.AbstractProtonConnection;
+import org.hornetq.amqp.dealer.protonimpl.AbstractProtonReceiver;
 import org.hornetq.amqp.dealer.protonimpl.ProtonSession;
 import org.hornetq.amqp.dealer.spi.ProtonSessionSPI;
 
@@ -36,9 +36,9 @@ import static org.hornetq.amqp.dealer.util.DeliveryUtil.decodeMessageImpl;
 /**
  * @author Clebert Suconic
  */
-public class ProtonClientReceiver extends ProtonAbstractReceiver implements AMQPClientReceiver
+public class ProtonClientReceiver extends AbstractProtonReceiver implements AMQPClientReceiver
 {
-   public ProtonClientReceiver(ProtonSessionSPI sessionSPI, ProtonAbstractConnectionImpl connection, ProtonSession protonSession, Receiver receiver)
+   public ProtonClientReceiver(ProtonSessionSPI sessionSPI, AbstractProtonConnection connection, ProtonSession protonSession, Receiver receiver)
    {
       super(sessionSPI, connection, protonSession, receiver);
    }

@@ -33,13 +33,13 @@ public abstract class AbstractProtonSender extends ProtonInitializable implement
 {
    protected final ProtonSession protonSession;
    protected final Sender sender;
-   protected final ProtonAbstractConnectionImpl connection;
+   protected final AbstractProtonConnection connection;
    protected boolean closed = false;
    protected final ProtonSessionSPI sessionSPI;
    protected CreditsSemaphore creditsSemaphore = new CreditsSemaphore(0);
 
 
-   public AbstractProtonSender(ProtonAbstractConnectionImpl connection, Sender sender, ProtonSession protonSession, ProtonSessionSPI server)
+   public AbstractProtonSender(AbstractProtonConnection connection, Sender sender, ProtonSession protonSession, ProtonSessionSPI server)
    {
       this.connection = connection;
       this.sender = sender;

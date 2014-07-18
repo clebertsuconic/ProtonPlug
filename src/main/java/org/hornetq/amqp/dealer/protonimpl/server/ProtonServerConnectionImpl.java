@@ -19,7 +19,7 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import org.hornetq.amqp.dealer.exceptions.HornetQAMQPException;
-import org.hornetq.amqp.dealer.protonimpl.ProtonAbstractConnectionImpl;
+import org.hornetq.amqp.dealer.protonimpl.AbstractProtonConnection;
 import org.hornetq.amqp.dealer.protonimpl.ProtonSession;
 import org.hornetq.amqp.dealer.spi.ProtonConnectionSPI;
 import org.hornetq.amqp.dealer.spi.ProtonSessionSPI;
@@ -28,7 +28,7 @@ import org.hornetq.amqp.dealer.spi.ProtonSessionSPI;
  * @author Clebert Suconic
  */
 
-public class ProtonServerConnectionImpl extends ProtonAbstractConnectionImpl
+public class ProtonServerConnectionImpl extends AbstractProtonConnection
 {
    public ProtonServerConnectionImpl(ProtonConnectionSPI connectionSP)
    {
@@ -64,13 +64,11 @@ public class ProtonServerConnectionImpl extends ProtonAbstractConnectionImpl
          Receiver receiver = (Receiver) link;
          if (link.getRemoteTarget() instanceof Coordinator)
          {
-            protonSession.setTransacted(true);
             Coordinator coordinator = (Coordinator) link.getRemoteTarget();
             protonSession.addTransactionHandler(coordinator, receiver);
          }
          else
          {
-            protonSession.setTransacted(false);
             protonSession.addReceiver(receiver);
             //todo do this using the server session flow control
             receiver.flow(100);
@@ -80,7 +78,6 @@ public class ProtonServerConnectionImpl extends ProtonAbstractConnectionImpl
       {
          synchronized (getTrio().getLock())
          {
-            protonSession.setTransacted(false);
             Sender sender = (Sender) link;
             protonSession.addSender(sender);
             sender.offer(1);

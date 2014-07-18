@@ -22,7 +22,6 @@ import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import org.hornetq.amqp.dealer.exceptions.HornetQAMQPException;
 import org.hornetq.amqp.dealer.exceptions.HornetQAMQPInternalErrorException;
-import org.hornetq.amqp.dealer.logger.HornetQAMQPProtocolMessageBundle;
 import org.hornetq.amqp.dealer.spi.ProtonSessionSPI;
 
 /**
@@ -31,7 +30,7 @@ import org.hornetq.amqp.dealer.spi.ProtonSessionSPI;
  */
 public abstract class ProtonSession extends ProtonInitializable
 {
-   protected final ProtonAbstractConnectionImpl connection;
+   protected final AbstractProtonConnection connection;
 
    protected final ProtonSessionSPI sessionSPI;
 
@@ -39,35 +38,39 @@ public abstract class ProtonSession extends ProtonInitializable
 
    private long currentTag = 0;
 
-   protected Map<Receiver, ProtonAbstractReceiver> receivers = new HashMap<Receiver, ProtonAbstractReceiver>();
+   protected Map<Receiver, AbstractProtonReceiver> receivers = new HashMap<Receiver, AbstractProtonReceiver>();
 
    protected Map<Sender, AbstractProtonSender> senders = new HashMap<Sender, AbstractProtonSender>();
 
    protected boolean closed = false;
 
-   public ProtonSession(ProtonSessionSPI sessionSPI, ProtonAbstractConnectionImpl connection, Session session)
+   public ProtonSession(ProtonSessionSPI sessionSPI, AbstractProtonConnection connection, Session session)
    {
       this.connection = connection;
       this.sessionSPI = sessionSPI;
       this.session = session;
    }
 
-   /*
-   * we need to setTransacted the actual server session when we receive the first linkas this tells us whether or not the
-   * session is transactional
-   * */
-   public void setTransacted(boolean transacted) throws HornetQAMQPInternalErrorException
+   public void initialise() throws HornetQAMQPException
    {
-      try
+      if (!isInitialized())
       {
-         sessionSPI.init(this, connection.getLogin(), connection.getPasscode(), transacted);
+         super.initialise();
+
+         if (sessionSPI != null)
+         {
+            try
+            {
+               sessionSPI.init(this, connection.getLogin(), connection.getPasscode());
+            }
+            catch (Exception e)
+            {
+               throw new HornetQAMQPInternalErrorException(e.getMessage(), e);
+            }
+         }
       }
-      catch (Exception e)
-      {
-         e.printStackTrace();
-         throw HornetQAMQPProtocolMessageBundle.BUNDLE.errorCreatingHornetQSession(e.getMessage());
-      }
-   }
+    }
+
 
    public void disconnect(Object consumer, String queueName)
    {
@@ -104,7 +107,7 @@ public abstract class ProtonSession extends ProtonInitializable
          return;
       }
 
-      for (ProtonAbstractReceiver protonProducer : receivers.values())
+      for (AbstractProtonReceiver protonProducer : receivers.values())
       {
          try
          {
@@ -132,8 +135,12 @@ public abstract class ProtonSession extends ProtonInitializable
       senders.clear();
       try
       {
-         sessionSPI.rollbackCurrentTX();
-         sessionSPI.close();
+         new Exception ("Session.close").printStackTrace();
+         if (sessionSPI != null)
+         {
+            sessionSPI.rollbackCurrentTX();
+            sessionSPI.close();
+         }
       }
       catch (Exception e)
       {

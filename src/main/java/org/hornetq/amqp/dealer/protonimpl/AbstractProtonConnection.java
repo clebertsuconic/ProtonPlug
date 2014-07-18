@@ -40,7 +40,7 @@ import org.hornetq.amqp.dealer.util.ReusableLatch;
 /**
  * Clebert Suconic
  */
-public abstract class ProtonAbstractConnectionImpl extends ProtonInitializable implements AMQPConnection
+public abstract class AbstractProtonConnection extends ProtonInitializable implements AMQPConnection
 {
    protected final ProtonInterceptTrio trio;
    protected final ProtonConnectionSPI connectionSPI;
@@ -56,7 +56,7 @@ public abstract class ProtonAbstractConnectionImpl extends ProtonInitializable i
    protected final Map<Object, ProtonSession> sessions = new ConcurrentHashMap<>();
    protected volatile boolean dataReceived;
 
-   public ProtonAbstractConnectionImpl(ProtonConnectionSPI connectionSPI)
+   public AbstractProtonConnection(ProtonConnectionSPI connectionSPI)
    {
       this.connectionSPI = connectionSPI;
       this.creationTime = System.currentTimeMillis();
@@ -209,10 +209,11 @@ public abstract class ProtonAbstractConnectionImpl extends ProtonInitializable i
       {
          try
          {
-            ProtonAbstractConnectionImpl.this.getSession(session).initialise();
+            AbstractProtonConnection.this.getSession(session).initialise();
          }
          catch (Throwable e)
          {
+            e.printStackTrace();
             session.close();
             transport.setCondition(new ErrorCondition(AmqpError.ILLEGAL_STATE, e.getMessage()));
          }
@@ -336,12 +337,12 @@ public abstract class ProtonAbstractConnectionImpl extends ProtonInitializable i
                   {
                      if (DebugInfo.debug)
                      {
-                        System.err.println("Pending before:" + pendingBytes + " at " + ProtonAbstractConnectionImpl.this.getClass());
+                        System.err.println("Pending before:" + pendingBytes + " at " + AbstractProtonConnection.this.getClass());
                      }
                      pendingBytes.addAndGet(-size);
                      if (DebugInfo.debug)
                      {
-                        System.err.println("Pending after:" + pendingBytes + " at " + ProtonAbstractConnectionImpl.this.getClass());
+                        System.err.println("Pending after:" + pendingBytes + " at " + AbstractProtonConnection.this.getClass());
                      }
                      transport.pop(size);
                   }

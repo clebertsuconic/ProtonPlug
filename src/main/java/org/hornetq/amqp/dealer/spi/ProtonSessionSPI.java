@@ -29,7 +29,7 @@ import org.hornetq.amqp.dealer.protonimpl.ProtonSession;
 public interface ProtonSessionSPI
 {
 
-   void init(ProtonSession session, String user, String passcode, boolean transacted) throws Exception;
+   void init(ProtonSession session, String user, String passcode) throws Exception;
 
    void start();
 

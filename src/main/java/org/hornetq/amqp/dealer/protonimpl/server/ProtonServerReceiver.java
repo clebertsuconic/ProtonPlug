@@ -24,8 +24,8 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.hornetq.amqp.dealer.exceptions.HornetQAMQPException;
 import org.hornetq.amqp.dealer.exceptions.HornetQAMQPInternalErrorException;
 import org.hornetq.amqp.dealer.logger.HornetQAMQPProtocolMessageBundle;
-import org.hornetq.amqp.dealer.protonimpl.ProtonAbstractConnectionImpl;
-import org.hornetq.amqp.dealer.protonimpl.ProtonAbstractReceiver;
+import org.hornetq.amqp.dealer.protonimpl.AbstractProtonConnection;
+import org.hornetq.amqp.dealer.protonimpl.AbstractProtonReceiver;
 import org.hornetq.amqp.dealer.protonimpl.ProtonSession;
 import org.hornetq.amqp.dealer.spi.ProtonSessionSPI;
 
@@ -35,12 +35,12 @@ import static org.hornetq.amqp.dealer.util.DeliveryUtil.readDelivery;
  * @author Clebert Suconic
  */
 
-public class ProtonServerReceiver extends ProtonAbstractReceiver
+public class ProtonServerReceiver extends AbstractProtonReceiver
 {
 
    private final int numberOfCredits;
 
-   public ProtonServerReceiver(ProtonSessionSPI sessionSPI, ProtonAbstractConnectionImpl connection, ProtonSession protonSession, Receiver receiver)
+   public ProtonServerReceiver(ProtonSessionSPI sessionSPI, AbstractProtonConnection connection, ProtonSession protonSession, Receiver receiver)
    {
       super(sessionSPI, connection, protonSession, receiver);
       this.numberOfCredits = connection.getNumberOfCredits();

@@ -22,9 +22,9 @@ import org.hornetq.amqp.dealer.spi.ProtonSessionSPI;
  *         <p/>
  *         handles incoming messages via a Proton Receiver and forwards them to HornetQ
  */
-public abstract class ProtonAbstractReceiver extends ProtonInitializable implements ProtonDeliveryHandler
+public abstract class AbstractProtonReceiver extends ProtonInitializable implements ProtonDeliveryHandler
 {
-   protected final ProtonAbstractConnectionImpl connection;
+   protected final AbstractProtonConnection connection;
 
    protected final ProtonSession protonSession;
 
@@ -34,7 +34,7 @@ public abstract class ProtonAbstractReceiver extends ProtonInitializable impleme
 
    protected final ProtonSessionSPI sessionSPI;
 
-   public ProtonAbstractReceiver(ProtonSessionSPI sessionSPI, ProtonAbstractConnectionImpl connection, ProtonSession protonSession, Receiver receiver)
+   public AbstractProtonReceiver(ProtonSessionSPI sessionSPI, AbstractProtonConnection connection, ProtonSession protonSession, Receiver receiver)
    {
       this.connection = connection;
       this.protonSession = protonSession;
