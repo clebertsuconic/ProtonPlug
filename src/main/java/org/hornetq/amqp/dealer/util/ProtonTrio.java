@@ -29,7 +29,6 @@ import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Sasl;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.Transport;
-import org.apache.qpid.proton.engine.TransportResultFactory;
 import org.hornetq.amqp.dealer.SASL;
 
 /**
@@ -140,14 +139,12 @@ public abstract class ProtonTrio
 
    /**
     * this method will change the readerIndex on bytes to the latest read position
-    *
-    * if returning false, you must retry the operation after some wait
     */
-   public boolean pump(ByteBuf bytes)
+   public void pump(ByteBuf bytes)
    {
       if (bytes.readableBytes() < 8)
       {
-         return true;
+         return;
       }
 
 
@@ -155,26 +152,25 @@ public abstract class ProtonTrio
       {
          synchronized (lock)
          {
-            while (bytes.readerIndex() < bytes.writerIndex())
+            while (bytes.readableBytes() > 0)
             {
                int capacity = transport.capacity();
-               if (capacity <= 0)
-               {
-                  System.out.println("Capacity is zeroed!!");
+               if (capacity > 0) {
+                  ByteBuffer tail = transport.tail();
+                  int min = Math.min(capacity, bytes.readableBytes());
+                  tail.limit(min);
+                  bytes.readBytes(tail);
                   transport.process();
                   checkSASL();
                   dispatch();
-                  return false;
+               } else  {
+                  if (capacity == 0) {
+                     System.out.println("abandoning: " + bytes.readableBytes());
+                  } else {
+                     System.out.println("transport closed, discarding: " + bytes.readableBytes());
+                  }
+                  bytes.skipBytes(bytes.readableBytes());
                }
-
-               final ByteBuffer tail = transport.tail();
-               int min = Math.min(tail.remaining(), bytes.readableBytes());
-               ByteBuffer tmp = bytes.internalNioBuffer(bytes.readerIndex(), min);
-               tail.put(tmp);
-               transport.process();
-               checkSASL();
-               dispatch();
-               bytes.readerIndex(bytes.readerIndex() + min);
             }
          }
       }
@@ -183,22 +179,6 @@ public abstract class ProtonTrio
          // After everything is processed we still need to check for more dispatches!
          dispatch();
       }
-
-      return true;
-   }
-
-   private boolean processBuffer()
-   {
-      if (transport.processInput() != TransportResultFactory.ok())
-      {
-         System.err.println("Couldn't process header!!!");
-         connection.setCondition(new ErrorCondition(AmqpError.ILLEGAL_STATE, "Error processing header"));
-         return false;
-      }
-
-      checkSASL();
-      dispatch();
-      return true;
    }
 
    private void checkSASL()
