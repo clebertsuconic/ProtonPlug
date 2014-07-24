@@ -62,7 +62,7 @@ public abstract class ProtonTrio
    {
 
       // TODO parameterize maxFrameSize
-      transport.setMaxFrameSize(1024 * 1024);
+//      transport.setMaxFrameSize(1024 * 1024);
       transport.bind(connection);
       connection.collect(collector);
       this.executor = executor;
@@ -142,12 +142,6 @@ public abstract class ProtonTrio
     */
    public void pump(ByteBuf bytes)
    {
-      if (bytes.readableBytes() < 8)
-      {
-         return;
-      }
-
-
       try
       {
          synchronized (lock)
