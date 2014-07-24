@@ -19,7 +19,7 @@ import java.util.List;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.UnpooledByteBufAllocator;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
@@ -112,7 +112,7 @@ public class MinimalServer
       bootstrap.option(ChannelOption.SO_REUSEADDR, true);
       bootstrap.childOption(ChannelOption.SO_REUSEADDR, true);
       bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
-      bootstrap.childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT);
+      bootstrap.childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
 
       channelGroup = new DefaultChannelGroup("hornetq-accepted-channels", GlobalEventExecutor.INSTANCE);
 
