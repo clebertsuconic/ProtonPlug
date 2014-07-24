@@ -98,7 +98,10 @@ public class MicroBenchmarkSimpleClientTest extends SimpleServerAbstractTest
                   if (received % 500 == 0 && received > 0)
                   {
                      receiver.flow(500);
-                     System.out.println("Received " + received);
+                     if (received % 5000 == 0)
+                     {
+                        System.out.println("Received " + received);
+                     }
                   }
                   received++;
 
