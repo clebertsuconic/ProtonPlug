@@ -24,6 +24,7 @@ import io.netty.buffer.ByteBuf;
 import org.apache.qpid.proton.codec.WritableBuffer;
 
 /**
+ * This is to use NettyBuffer within Proton
  * @author Clebert Suconic
  */
 

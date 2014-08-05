@@ -304,21 +304,34 @@ public abstract class AbstractProtonConnection extends ProtonInitializable imple
       }
 
 
-//      private int offset = 0;
+      private int offset = 0;
 
       @Override
       protected void onTransport(final Transport transport)
       {
-         ByteBuf bytes = getPooledNettyBytes(transport);
-         // null means nothing to be written
-         if (bytes != null)
+
+         final Thread t = Thread.currentThread();
+         ByteBuf bytes = null;
+         while ((bytes = getPooledNettyBytes(transport)) != null)
          {
+            // null means nothing to be written
             final int size = bytes.readableBytes();
+            offset += size;
             connectionSPI.output(bytes, new ChannelFutureListener()
             {
                @Override
                public void operationComplete(ChannelFuture future) throws Exception
                {
+                  synchronized (getLock())
+                  {
+                     offset -= size;
+                     transport.pop(size);
+                  }
+
+                  if (Thread.currentThread() != t)
+                  {
+                     dispatchOnExecutor();
+                  }
                }
             });
          }
@@ -333,7 +346,7 @@ public abstract class AbstractProtonConnection extends ProtonInitializable imple
             return null;//throw new IllegalStateException("xxx need to close the connection");
          }
 
-         int size = pending ;
+         int size = pending - offset;
 
          if (size < 0) {
             throw new IllegalStateException("negative size: " + pending);
@@ -346,9 +359,8 @@ public abstract class AbstractProtonConnection extends ProtonInitializable imple
          // For returning PooledBytes
          ByteBuf buffer = PooledByteBufAllocator.DEFAULT.buffer(size);
          ByteBuffer head = transport.head();
-         head.position(0);
+         head.position(offset);
          buffer.writeBytes(head);
-         transport.pop(size);
          return buffer;
       }
 

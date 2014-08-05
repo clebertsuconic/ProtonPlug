@@ -61,6 +61,11 @@ public abstract class ProtonTrio
    public ProtonTrio(Executor executor)
    {
 
+      if (executor == null)
+      {
+         throw new NullPointerException("executor == null");
+      }
+
       // TODO parameterize maxFrameSize
 //      transport.setMaxFrameSize(1024 * 1024);
       transport.bind(connection);
@@ -161,7 +166,7 @@ public abstract class ProtonTrio
                   if (capacity == 0) {
                      System.out.println("abandoning: " + bytes.readableBytes());
                   } else {
-                     System.out.println("transport closed, discarding: " + bytes.readableBytes());
+                     System.out.println("transport closed, discarding: " + bytes.readableBytes() + " capacity = " + transport.capacity());
                   }
                   bytes.skipBytes(bytes.readableBytes());
                }
@@ -216,7 +221,7 @@ public abstract class ProtonTrio
       if (inDispatch.get() != null)
       {
 //         new Exception("Already in dispatch mode, using executor").printStackTrace();
-         executor.execute(dispatchRunnable);
+         dispatchOnExecutor();
          return;
       }
 
@@ -233,10 +238,19 @@ public abstract class ProtonTrio
 
    }
 
+   public void dispatchOnExecutor()
+   {
+      executor.execute(dispatchRunnable);
+   }
+
    protected void internalDispatch()
    {
       synchronized (lock)
       {
+
+         // forcing transport on every dispatch call
+         onTransport(transport);
+
          try
          {
             Event ev;

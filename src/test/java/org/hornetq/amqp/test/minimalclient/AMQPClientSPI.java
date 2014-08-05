@@ -14,6 +14,7 @@
 package org.hornetq.amqp.test.minimalclient;
 
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -42,7 +43,7 @@ public class AMQPClientSPI implements ProtonConnectionSPI
    @Override
    public Executor newSingleThreadExecutor()
    {
-      return null;
+      return Executors.newSingleThreadExecutor();
    }
 
    @Override
