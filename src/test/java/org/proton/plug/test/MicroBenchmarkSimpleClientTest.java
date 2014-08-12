@@ -50,7 +50,7 @@ public class MicroBenchmarkSimpleClientTest extends SimpleServerAbstractTest
    {
       List<Object[]> list = Arrays.asList(new Object[][]{
 //         {Boolean.TRUE, Boolean.FALSE}, // TODO: Fix SASL and netty
-         {Boolean.FALSE, Boolean.TRUE},
+//         {Boolean.FALSE, Boolean.TRUE},
 //         {Boolean.TRUE, Boolean.TRUE}, // TODO: Fix SASL and inVM
          {Boolean.FALSE, Boolean.FALSE}});
 
