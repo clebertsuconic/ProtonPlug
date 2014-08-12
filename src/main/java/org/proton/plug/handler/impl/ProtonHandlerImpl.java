@@ -196,9 +196,9 @@ public class ProtonHandlerImpl extends ProtonInitializable implements ProtonHand
             throw new IllegalStateException("You called outputDone for more bytes than you actually received. numberOfBytes=" + bytes +
                                                ", outcome result=" + offset);
          }
-
-         flush();
       }
+
+      flush();
    }
 
    @Override

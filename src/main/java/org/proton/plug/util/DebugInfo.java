@@ -20,4 +20,7 @@ package org.proton.plug.util;
 public class DebugInfo
 {
    public static final boolean debug = false;
+
+   // move this to AbstractConnection
+   public static final boolean performSyncOnFlush = false;
 }

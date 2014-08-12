@@ -111,20 +111,24 @@ public class MinimalConnectionSPI implements ProtonConnectionCallback
       });
 
       channel.flush();
-      connection.outputDone(bufferSize);
 
-      try
+      if (DebugInfo.performSyncOnFlush)
       {
-         if (!latch.await(1, TimeUnit.SECONDS))
+         try
          {
-            // TODO logs
-            System.err.println("Flush took longer than 5 seconds!!!");
+            if (!latch.await(5, TimeUnit.SECONDS))
+            {
+               // TODO logs
+               System.err.println("Flush took longer than 5 seconds!!!");
+            }
+         }
+         catch (Throwable e)
+         {
+            e.printStackTrace();
          }
       }
-      catch (Throwable e)
-      {
-         e.printStackTrace();
-      }
+      connection.outputDone(bufferSize);
+
 
 //      if (connection.capacity() > 0)
 //      {
