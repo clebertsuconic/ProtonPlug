@@ -124,13 +124,11 @@ public abstract class AbstractConnection extends ProtonInitializable implements 
 
    protected void flushBytes()
    {
-      synchronized (getLock())
+      ByteBuf bytes;
+      // handler.outputBuffer has the lock
+      while ((bytes = handler.outputBuffer()) != null)
       {
-         ByteBuf bytes = null;
-         while ((bytes = handler.outputBuffer()) != null)
-         {
-            connectionCallback.onTransport(bytes, AbstractConnection.this);
-         }
+         connectionCallback.onTransport(bytes, AbstractConnection.this);
       }
    }
 
@@ -147,8 +145,11 @@ public abstract class AbstractConnection extends ProtonInitializable implements 
       @Override
       public void onRemoteOpen(Connection connection) throws Exception
       {
-         connection.setContext(AbstractConnection.this);
-         connection.open();
+         synchronized (getLock())
+         {
+            connection.setContext(AbstractConnection.this);
+            connection.open();
+         }
          initialise();
       }
 
@@ -156,11 +157,14 @@ public abstract class AbstractConnection extends ProtonInitializable implements 
       @Override
       public void onClose(Connection connection)
       {
-         for (SessionExtension protonSession : sessions.values())
+         synchronized (getLock())
          {
-            protonSession.close();
+            for (SessionExtension protonSession : sessions.values())
+            {
+               protonSession.close();
+            }
+            sessions.clear();
          }
-         sessions.clear();
          // We must force write the channel before we actually destroy the connection
          onTransport(handler.getTransport());
          destroy();
@@ -176,19 +180,25 @@ public abstract class AbstractConnection extends ProtonInitializable implements 
       public void onRemoteOpen(Session session) throws Exception
       {
          getSessionExtension(session).initialise();
-         session.open();
+         synchronized (getLock())
+         {
+            session.open();
+         }
       }
 
 
       @Override
       public void onClose(Session session) throws Exception
       {
-
-         session.close();
-         SessionExtension protonSession = (SessionExtension) session.getContext();
-         if (protonSession != null)
+         synchronized (getLock())
          {
-            protonSession.close();
+            session.close();
+         }
+
+         SessionExtension sessionContext = (SessionExtension) session.getContext();
+         if (sessionContext != null)
+         {
+            sessionContext.close();
             sessions.remove(session);
             session.setContext(null);
          }

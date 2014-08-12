@@ -196,6 +196,8 @@ public class ProtonHandlerImpl extends ProtonInitializable implements ProtonHand
             throw new IllegalStateException("You called outputDone for more bytes than you actually received. numberOfBytes=" + bytes +
                                                ", outcome result=" + offset);
          }
+
+         flush();
       }
    }
 
@@ -252,8 +254,22 @@ public class ProtonHandlerImpl extends ProtonInitializable implements ProtonHand
       synchronized (lock)
       {
          transport.process();
-         checkServerSASL();
+
+         if (dispatching) {
+            return;
+         }
+
+         dispatching = true;
+
+      }
+
+      try
+      {
          dispatch();
+      }
+      finally
+      {
+         dispatching = false;
       }
    }
 
@@ -301,42 +317,49 @@ public class ProtonHandlerImpl extends ProtonInitializable implements ProtonHand
       }
    }
 
-
-   protected void dispatch() {
-      synchronized (lock) {
-         if (dispatching) {
-            return;
-         }
-
-         dispatching = true;
-         try
+   private Event popEvent()
+   {
+      synchronized (lock)
+      {
+         Event ev = collector.peek();
+         if (ev != null)
          {
-            Event ev;
-            while ((ev = collector.peek()) != null)
+            // pop will invalidate the event
+            // for that reason we make a new one
+            // Events are reused inside the collector, so we need to make a new one here
+            ev = ev.copy();
+            collector.pop();
+         }
+         return ev;
+      }
+   }
+
+
+   private void dispatch()
+   {
+      Event ev;
+      // We don't hold a lock on the entire event processing
+      // because we could have a distributed deadlock
+      // while processing events (for instance onTransport)
+      // while a client is also trying to write here
+      while ((ev = popEvent()) != null)
+      {
+         for (EventHandler h : handlers)
+         {
+            if (DebugInfo.debug)
             {
-               for (EventHandler h : handlers)
-               {
-                  if (DebugInfo.debug)
-                  {
-                     System.out.println("Handling " + ev);
-                  }
-                  try
-                  {
-                     Events.dispatch(ev, h);
-                  }
-                  catch (Exception e)
-                  {
-                     // TODO: logs
-                     e.printStackTrace();
-                     connection.setCondition(new ErrorCondition());
-                  }
-               }
-               collector.pop();
+               System.out.println("Handling " + ev + " towards " + h);
             }
-         }
-         finally
-         {
-            dispatching = false;
+            try
+            {
+               Events.dispatch(ev, h);
+            }
+            catch (Exception e)
+            {
+               // TODO: logs
+               e.printStackTrace();
+               connection.setCondition(new ErrorCondition());
+            }
          }
       }
    }

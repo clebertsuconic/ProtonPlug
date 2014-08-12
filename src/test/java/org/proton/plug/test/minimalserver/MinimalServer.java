@@ -112,7 +112,7 @@ public class MinimalServer
       bootstrap.option(ChannelOption.SO_REUSEADDR, true).
                 childOption(ChannelOption.SO_REUSEADDR, true).
                 childOption(ChannelOption.SO_KEEPALIVE, true).
-               // childOption(ChannelOption.AUTO_READ, false).
+//                childOption(ChannelOption.AUTO_READ, false).
                 childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
 
       channelGroup = new DefaultChannelGroup("hornetq-accepted-channels", GlobalEventExecutor.INSTANCE);
@@ -142,7 +142,7 @@ public class MinimalServer
       {
          super.channelActive(ctx);
          connection = ProtonServerConnectionFactory.getFactory().createConnection(new MinimalConnectionSPI(ctx.channel()));
-         ctx.read();
+         //ctx.read();
       }
 
       @Override
@@ -155,10 +155,10 @@ public class MinimalServer
 
          connection.inputBuffer(byteIn);
          ctx.flush();
-         if (connection.capacity() > 0)
-         {
-            ctx.read();
-         }
+//         if (connection.capacity() > 0)
+//         {
+//            ctx.read();
+//         }
       }
    }
 

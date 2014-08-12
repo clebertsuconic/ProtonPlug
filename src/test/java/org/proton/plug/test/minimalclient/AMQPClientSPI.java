@@ -13,6 +13,8 @@
 
 package org.proton.plug.test.minimalclient;
 
+import java.util.concurrent.TimeUnit;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -22,6 +24,7 @@ import org.proton.plug.context.ProtonConnectionCallback;
 import org.proton.plug.context.ProtonSessionCallback;
 import org.proton.plug.util.ByteUtil;
 import org.proton.plug.util.DebugInfo;
+import org.proton.plug.util.ReusableLatch;
 
 /**
  * @author Clebert Suconic
@@ -54,6 +57,8 @@ public class AMQPClientSPI implements ProtonConnectionCallback
 
    }
 
+   final ReusableLatch latch = new ReusableLatch(0);
+
    @Override
    public void onTransport(final ByteBuf bytes, final AMQPConnection connection)
    {
@@ -64,15 +69,33 @@ public class AMQPClientSPI implements ProtonConnectionCallback
 
       final int bufferSize = bytes.writerIndex();
 
+
+      latch.countUp();
+
       channel.writeAndFlush(bytes).addListener(new ChannelFutureListener()
       {
          @Override
          public void operationComplete(ChannelFuture future) throws Exception
          {
 //            connection.outputDone(bufferSize);
+            latch.countDown();
          }
       });
       connection.outputDone(bufferSize);
+
+      try
+      {
+         if (!latch.await(1, TimeUnit.SECONDS))
+         {
+            // TODO logs
+            System.err.println("Flush took longer than 5 seconds!!!");
+         }
+      }
+      catch (Throwable e)
+      {
+         e.printStackTrace();
+      }
+
    }
 
    @Override

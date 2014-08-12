@@ -15,6 +15,7 @@ package org.proton.plug.test.minimalserver;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -25,6 +26,7 @@ import org.proton.plug.context.ProtonConnectionCallback;
 import org.proton.plug.context.ProtonSessionCallback;
 import org.proton.plug.util.ByteUtil;
 import org.proton.plug.util.DebugInfo;
+import org.proton.plug.util.ReusableLatch;
 
 /**
  * @author Clebert Suconic
@@ -59,12 +61,13 @@ public class MinimalConnectionSPI implements ProtonConnectionCallback
       return connection;
    }
 
+   final ReusableLatch latch = new ReusableLatch(0);
+
 
 
    @Override
    public void onTransport(final ByteBuf bytes, final AMQPConnection connection)
    {
-
       final int bufferSize = bytes.writerIndex();
 
       if (DebugInfo.debug)
@@ -88,6 +91,7 @@ public class MinimalConnectionSPI implements ProtonConnectionCallback
       }
 
 
+      latch.countUp();
       // ^^ debug
 
       channel.writeAndFlush(bytes).addListener(new ChannelFutureListener()
@@ -95,10 +99,37 @@ public class MinimalConnectionSPI implements ProtonConnectionCallback
          @Override
          public void operationComplete(ChannelFuture future) throws Exception
          {
+            latch.countDown();
+
+              //   https://issues.apache.org/jira/browse/PROTON-645
 //            connection.outputDone(bufferSize);
+//            if (connection.capacity() > 0)
+//            {
+//               channel.read();
+//            }
          }
       });
+
+      channel.flush();
       connection.outputDone(bufferSize);
+
+      try
+      {
+         if (!latch.await(1, TimeUnit.SECONDS))
+         {
+            // TODO logs
+            System.err.println("Flush took longer than 5 seconds!!!");
+         }
+      }
+      catch (Throwable e)
+      {
+         e.printStackTrace();
+      }
+
+//      if (connection.capacity() > 0)
+//      {
+//         channel.read();
+//      }
    }
 
    @Override
