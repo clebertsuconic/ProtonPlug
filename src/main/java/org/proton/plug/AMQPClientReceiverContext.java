@@ -21,7 +21,7 @@ import org.apache.qpid.proton.message.ProtonJMessage;
  * @author Clebert Suconic
  */
 
-public interface AMQPClientReceiver
+public interface AMQPClientReceiverContext
 {
    ProtonJMessage receiveMessage(int time, TimeUnit unit) throws Exception;
    void flow(int credits);

@@ -22,7 +22,7 @@ import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.Transport;
-import org.proton.plug.AMQPConnection;
+import org.proton.plug.AMQPConnectionContext;
 import org.proton.plug.exceptions.HornetQAMQPException;
 import org.proton.plug.handler.ProtonHandler;
 import org.proton.plug.handler.SASLResult;
@@ -31,7 +31,7 @@ import org.proton.plug.handler.impl.DefaultEventHandler;
 /**
  * Clebert Suconic
  */
-public abstract class AbstractConnectionContext extends ProtonInitializable implements AMQPConnection
+public abstract class AbstractConnectionContext extends ProtonInitializable implements AMQPConnectionContext
 {
 
    protected ProtonHandler handler = ProtonHandler.Factory.create();

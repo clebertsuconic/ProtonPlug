@@ -13,43 +13,16 @@
 
 package org.proton.plug;
 
-import io.netty.buffer.ByteBuf;
-import org.proton.plug.handler.SASLResult;
+import org.proton.plug.context.ProtonConnectionCallback;
 
 /**
  * @author Clebert Suconic
  */
 
-public interface AMQPConnection
+public abstract class AMQPConnectionContextFactory
 {
-
-   void close();
-
-   Object getLock();
-
-   boolean checkDataReceived();
-
-   long getCreationTime();
-
-   SASLResult getSASLResult();
-
-   int capacity();
-
    /**
-    * This is for the Remoting layer to push bytes on the AMQP Connection
-    * The buffer readerIndex should be at the latest read byte after this method is called
-    * @param buffer
     * @return
     */
-   void inputBuffer(ByteBuf buffer);
-
-   void flush();
-
-   /**
-    * To be called when the bytes were sent down the stream (flushed on the socket for example)
-    * @param numberOfBytes
-    */
-   void outputDone(int numberOfBytes);
-
-
+   public abstract AMQPConnectionContext createConnection(ProtonConnectionCallback connectionCallback);
 }

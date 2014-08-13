@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import io.netty.buffer.ByteBuf;
-import org.proton.plug.AMQPConnection;
+import org.proton.plug.AMQPConnectionContext;
 import org.proton.plug.context.ProtonConnectionCallback;
 import org.proton.plug.context.server.ProtonServerConnectionContext;
 import org.proton.plug.context.ProtonSessionCallback;
@@ -32,7 +32,7 @@ import org.proton.plug.util.DebugInfo;
 public class ProtonINVMSPI implements ProtonConnectionCallback
 {
 
-   AMQPConnection returningConnection;
+   AMQPConnectionContext returningConnection;
 
    ProtonServerConnectionContext serverConnection = new ProtonServerConnectionContext(new ReturnSPI());
 
@@ -65,7 +65,7 @@ public class ProtonINVMSPI implements ProtonConnectionCallback
    }
 
    @Override
-   public void onTransport(final ByteBuf bytes, final AMQPConnection connection)
+   public void onTransport(final ByteBuf bytes, final AMQPConnectionContext connection)
    {
       if (DebugInfo.debug)
       {
@@ -103,19 +103,19 @@ public class ProtonINVMSPI implements ProtonConnectionCallback
    }
 
    @Override
-   public void setConnection(AMQPConnection connection)
+   public void setConnection(AMQPConnectionContext connection)
    {
       returningConnection = connection;
    }
 
    @Override
-   public AMQPConnection getConnection()
+   public AMQPConnectionContext getConnection()
    {
       return returningConnection;
    }
 
    @Override
-   public ProtonSessionCallback createSessionCallback(AMQPConnection connection)
+   public ProtonSessionCallback createSessionCallback(AMQPConnectionContext connection)
    {
       return null;
    }
@@ -129,7 +129,7 @@ public class ProtonINVMSPI implements ProtonConnectionCallback
       }
 
       @Override
-      public void onTransport(final ByteBuf bytes, final AMQPConnection connection)
+      public void onTransport(final ByteBuf bytes, final AMQPConnectionContext connection)
       {
 
          final int size = bytes.writerIndex();
@@ -172,19 +172,19 @@ public class ProtonINVMSPI implements ProtonConnectionCallback
       }
 
       @Override
-      public ProtonSessionCallback createSessionCallback(AMQPConnection connection)
+      public ProtonSessionCallback createSessionCallback(AMQPConnectionContext connection)
       {
          return new MinimalSessionSPI();
       }
 
       @Override
-      public void setConnection(AMQPConnection connection)
+      public void setConnection(AMQPConnectionContext connection)
       {
 
       }
 
       @Override
-      public AMQPConnection getConnection()
+      public AMQPConnectionContext getConnection()
       {
          return null;
       }

@@ -11,30 +11,45 @@
  * permissions and limitations under the License.
  */
 
-package org.proton.plug.context;
+package org.proton.plug;
 
 import io.netty.buffer.ByteBuf;
-import org.proton.plug.AMQPConnectionContext;
+import org.proton.plug.handler.SASLResult;
 
 /**
  * @author Clebert Suconic
  */
 
-public interface ProtonConnectionCallback
+public interface AMQPConnectionContext
 {
+
    void close();
 
+   Object getLock();
+
+   boolean checkDataReceived();
+
+   long getCreationTime();
+
+   SASLResult getSASLResult();
+
+   int capacity();
+
    /**
-    * this is called when bytes are available to be sent to the client.
-    * you have to callback {@link org.proton.plug.AMQPConnectionContext#outputDone(int)} after you're done with this buffer
-    * @param bytes
+    * This is for the Remoting layer to push bytes on the AMQP Connection
+    * The buffer readerIndex should be at the latest read byte after this method is called
+    * @param buffer
+    * @return
     */
-   void onTransport(ByteBuf bytes, AMQPConnectionContext connection);
+   void inputBuffer(ByteBuf buffer);
 
-   ProtonSessionCallback createSessionCallback(AMQPConnectionContext connection);
+   void flush();
 
-   // TODO: REMOVE THIS! The caller doing this can do it
-   void setConnection(AMQPConnectionContext connection);
+   /**
+    * To be called when the bytes were sent down the stream (flushed on the socket for example)
+    * @param numberOfBytes
+    */
+   void outputDone(int numberOfBytes);
 
-   AMQPConnectionContext getConnection();
+
 }

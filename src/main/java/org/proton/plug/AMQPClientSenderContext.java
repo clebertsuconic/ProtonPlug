@@ -13,17 +13,13 @@
 
 package org.proton.plug;
 
-import org.proton.plug.context.ProtonConnectionCallback;
-import org.proton.plug.handler.SASLMechanism;
+import org.apache.qpid.proton.message.ProtonJMessage;
 
 /**
  * @author Clebert Suconic
  */
 
-public abstract class AMQPConnectionFactory
+public interface AMQPClientSenderContext
 {
-   /**
-    * @return
-    */
-   public abstract AMQPConnection createConnection(ProtonConnectionCallback connectionCallback);
+   void send(ProtonJMessage message);
 }

@@ -25,7 +25,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import org.proton.plug.AMQPClientConnection;
+import org.proton.plug.AMQPClientConnectionContext;
 import org.proton.plug.context.client.ProtonClientConnectionContextFactory;
 
 /**
@@ -53,7 +53,7 @@ public class SimpleAMQPConnector implements Connector
       );
    }
 
-   public AMQPClientConnection connect(String host, int port) throws Exception
+   public AMQPClientConnectionContext connect(String host, int port) throws Exception
    {
       SocketAddress remoteDestination = new InetSocketAddress(host, port);
 
@@ -63,7 +63,7 @@ public class SimpleAMQPConnector implements Connector
 
       AMQPClientSPI clientConnectionSPI = new AMQPClientSPI(future.channel());
 
-      final AMQPClientConnection connection = (AMQPClientConnection) ProtonClientConnectionContextFactory.getFactory().createConnection(clientConnectionSPI);
+      final AMQPClientConnectionContext connection = (AMQPClientConnectionContext) ProtonClientConnectionContextFactory.getFactory().createConnection(clientConnectionSPI);
 
       future.channel().pipeline().addLast(
          new ChannelDuplexHandler()

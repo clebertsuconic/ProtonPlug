@@ -26,10 +26,10 @@ import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.Properties;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.message.impl.MessageImpl;
-import org.proton.plug.AMQPClientConnection;
-import org.proton.plug.AMQPClientReceiver;
-import org.proton.plug.AMQPClientSender;
-import org.proton.plug.AMQPClientSession;
+import org.proton.plug.AMQPClientConnectionContext;
+import org.proton.plug.AMQPClientReceiverContext;
+import org.proton.plug.AMQPClientSenderContext;
+import org.proton.plug.AMQPClientSessionContext;
 import org.proton.plug.SASLPlain;
 import org.proton.plug.test.minimalclient.Connector;
 import org.proton.plug.test.util.SimpleServerAbstractTest;
@@ -70,12 +70,12 @@ public class SimpleTest extends SimpleServerAbstractTest
    {
       Connector connector = newConnector();
       connector.start();
-      AMQPClientConnection clientConnection = connector.connect("127.0.0.1", 5672);
+      AMQPClientConnectionContext clientConnection = connector.connect("127.0.0.1", 5672);
 
       clientConnection.clientOpen(useSASL ? new SASLPlain("aa", "aa") : null);
 
-      AMQPClientSession session = clientConnection.createClientSession();
-      AMQPClientSender clientSender = session.createSender("Test", true);
+      AMQPClientSessionContext session = clientConnection.createClientSession();
+      AMQPClientSenderContext clientSender = session.createSender("Test", true);
       Properties props = new Properties();
 
       MessageImpl message = (MessageImpl) Message.Factory.create();
@@ -85,7 +85,7 @@ public class SimpleTest extends SimpleServerAbstractTest
       message.setBody(value);
       clientSender.send(message);
 
-      AMQPClientReceiver receiver = session.createReceiver("Test");
+      AMQPClientReceiverContext receiver = session.createReceiver("Test");
 
       receiver.flow(1000);
 

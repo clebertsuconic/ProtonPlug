@@ -20,7 +20,7 @@ import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.message.ProtonJMessage;
-import org.proton.plug.AMQPClientSender;
+import org.proton.plug.AMQPClientSenderContext;
 import org.proton.plug.context.AbstractConnectionContext;
 import org.proton.plug.context.AbstractProtonContextSender;
 import org.proton.plug.context.AbstractProtonSessionContext;
@@ -32,7 +32,7 @@ import org.proton.plug.util.FutureRunnable;
  * @author Clebert Suconic
  */
 
-public class ProtonClientContext extends AbstractProtonContextSender implements AMQPClientSender
+public class ProtonClientContext extends AbstractProtonContextSender implements AMQPClientSenderContext
 {
 
    FutureRunnable catchUpRunnable = new FutureRunnable();

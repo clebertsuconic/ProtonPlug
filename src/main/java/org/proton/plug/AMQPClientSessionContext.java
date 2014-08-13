@@ -19,9 +19,9 @@ import org.proton.plug.exceptions.HornetQAMQPException;
  * @author Clebert Suconic
  */
 
-public interface AMQPClientSession
+public interface AMQPClientSessionContext
 {
-   AMQPClientSender createSender(String address, boolean preSettled) throws HornetQAMQPException;
+   AMQPClientSenderContext createSender(String address, boolean preSettled) throws HornetQAMQPException;
 
-   AMQPClientReceiver createReceiver(String address) throws HornetQAMQPException;
+   AMQPClientReceiverContext createReceiver(String address) throws HornetQAMQPException;
 }

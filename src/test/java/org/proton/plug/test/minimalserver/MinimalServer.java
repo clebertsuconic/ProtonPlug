@@ -36,7 +36,7 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import io.netty.util.ResourceLeakDetector;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
-import org.proton.plug.AMQPConnection;
+import org.proton.plug.AMQPConnectionContext;
 import org.proton.plug.context.server.ProtonServerConnectionContextFactory;
 import org.proton.plug.util.ByteUtil;
 import org.proton.plug.util.DebugInfo;
@@ -130,7 +130,7 @@ public class MinimalServer
    class ProtocolDecoder extends ByteToMessageDecoder
    {
 
-      AMQPConnection connection;
+      AMQPConnectionContext connection;
 
 
       public ProtocolDecoder()

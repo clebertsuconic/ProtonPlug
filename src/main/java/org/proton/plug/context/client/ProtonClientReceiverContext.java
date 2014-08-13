@@ -23,7 +23,7 @@ import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.ProtonJMessage;
 import org.apache.qpid.proton.message.impl.MessageImpl;
-import org.proton.plug.AMQPClientReceiver;
+import org.proton.plug.AMQPClientReceiverContext;
 import org.proton.plug.context.AbstractConnectionContext;
 import org.proton.plug.context.AbstractProtonReceiverContext;
 import org.proton.plug.context.AbstractProtonSessionContext;
@@ -36,7 +36,7 @@ import static org.proton.plug.util.DeliveryUtil.decodeMessageImpl;
 /**
  * @author Clebert Suconic
  */
-public class ProtonClientReceiverContext extends AbstractProtonReceiverContext implements AMQPClientReceiver
+public class ProtonClientReceiverContext extends AbstractProtonReceiverContext implements AMQPClientReceiverContext
 {
    public ProtonClientReceiverContext(ProtonSessionCallback sessionSPI, AbstractConnectionContext connection, AbstractProtonSessionContext protonSession, Receiver receiver)
    {

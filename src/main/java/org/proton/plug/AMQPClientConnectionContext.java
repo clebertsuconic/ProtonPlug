@@ -20,7 +20,7 @@ import org.proton.plug.exceptions.HornetQAMQPException;
  * @author Clebert Suconic
  */
 
-public interface AMQPClientConnection extends AMQPConnection
+public interface AMQPClientConnectionContext extends AMQPConnectionContext
 {
    /**
     * This will send an open and block for its return on AMQP protocol.
@@ -28,5 +28,5 @@ public interface AMQPClientConnection extends AMQPConnection
     */
    void clientOpen(ClientSASL sasl) throws Exception;
 
-   AMQPClientSession createClientSession() throws HornetQAMQPException;
+   AMQPClientSessionContext createClientSession() throws HornetQAMQPException;
 }

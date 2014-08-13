@@ -15,8 +15,8 @@ package org.proton.plug.context.client;
 
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Session;
-import org.proton.plug.AMQPClientConnection;
-import org.proton.plug.AMQPClientSession;
+import org.proton.plug.AMQPClientConnectionContext;
+import org.proton.plug.AMQPClientSessionContext;
 import org.proton.plug.ClientSASL;
 import org.proton.plug.context.AbstractConnectionContext;
 import org.proton.plug.context.AbstractProtonSessionContext;
@@ -30,7 +30,7 @@ import org.proton.plug.util.FutureRunnable;
  * @author Clebert Suconic
  */
 
-public class ProtonClientConnectionContext extends AbstractConnectionContext implements AMQPClientConnection
+public class ProtonClientConnectionContext extends AbstractConnectionContext implements AMQPClientConnectionContext
 {
    public ProtonClientConnectionContext(ProtonConnectionCallback connectionCallback)
    {
@@ -56,7 +56,7 @@ public class ProtonClientConnectionContext extends AbstractConnectionContext imp
       waitWithTimeout(future);
    }
 
-   public AMQPClientSession createClientSession() throws HornetQAMQPException
+   public AMQPClientSessionContext createClientSession() throws HornetQAMQPException
    {
 
       FutureRunnable futureRunnable =  new FutureRunnable(1);

@@ -19,7 +19,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
-import org.proton.plug.AMQPConnection;
+import org.proton.plug.AMQPConnectionContext;
 import org.proton.plug.context.ProtonConnectionCallback;
 import org.proton.plug.context.ProtonSessionCallback;
 import org.proton.plug.util.ByteUtil;
@@ -34,19 +34,19 @@ public class AMQPClientSPI implements ProtonConnectionCallback
 {
 
    final Channel channel;
-   protected AMQPConnection connection;
+   protected AMQPConnectionContext connection;
 
    public AMQPClientSPI(Channel channel)
    {
       this.channel = channel;
    }
 
-   public void setConnection(AMQPConnection connection)
+   public void setConnection(AMQPConnectionContext connection)
    {
       this.connection = connection;
    }
 
-   public AMQPConnection getConnection()
+   public AMQPConnectionContext getConnection()
    {
       return connection;
    }
@@ -60,7 +60,7 @@ public class AMQPClientSPI implements ProtonConnectionCallback
    final ReusableLatch latch = new ReusableLatch(0);
 
    @Override
-   public void onTransport(final ByteBuf bytes, final AMQPConnection connection)
+   public void onTransport(final ByteBuf bytes, final AMQPConnectionContext connection)
    {
       if (DebugInfo.debug)
       {
@@ -103,7 +103,7 @@ public class AMQPClientSPI implements ProtonConnectionCallback
    }
 
    @Override
-   public ProtonSessionCallback createSessionCallback(AMQPConnection connection)
+   public ProtonSessionCallback createSessionCallback(AMQPConnectionContext connection)
    {
       return null;
    }

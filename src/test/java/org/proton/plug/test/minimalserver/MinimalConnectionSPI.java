@@ -21,7 +21,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
-import org.proton.plug.AMQPConnection;
+import org.proton.plug.AMQPConnectionContext;
 import org.proton.plug.context.ProtonConnectionCallback;
 import org.proton.plug.context.ProtonSessionCallback;
 import org.proton.plug.util.ByteUtil;
@@ -36,7 +36,7 @@ public class MinimalConnectionSPI implements ProtonConnectionCallback
 {
    Channel channel;
 
-   private AMQPConnection connection;
+   private AMQPConnectionContext connection;
 
    public MinimalConnectionSPI(Channel channel)
    {
@@ -51,12 +51,12 @@ public class MinimalConnectionSPI implements ProtonConnectionCallback
       executorService.shutdown();
    }
 
-   public void setConnection(AMQPConnection connection)
+   public void setConnection(AMQPConnectionContext connection)
    {
       this.connection = connection;
    }
 
-   public AMQPConnection getConnection()
+   public AMQPConnectionContext getConnection()
    {
       return connection;
    }
@@ -66,7 +66,7 @@ public class MinimalConnectionSPI implements ProtonConnectionCallback
 
 
    @Override
-   public void onTransport(final ByteBuf bytes, final AMQPConnection connection)
+   public void onTransport(final ByteBuf bytes, final AMQPConnectionContext connection)
    {
       final int bufferSize = bytes.writerIndex();
 
@@ -137,7 +137,7 @@ public class MinimalConnectionSPI implements ProtonConnectionCallback
    }
 
    @Override
-   public ProtonSessionCallback createSessionCallback(AMQPConnection connection)
+   public ProtonSessionCallback createSessionCallback(AMQPConnectionContext connection)
    {
       return new MinimalSessionSPI();
    }

@@ -13,7 +13,7 @@
 
 package org.proton.plug.test.minimalclient;
 
-import org.proton.plug.AMQPClientConnection;
+import org.proton.plug.AMQPClientConnectionContext;
 
 /**
  * @author Clebert Suconic
@@ -22,5 +22,5 @@ import org.proton.plug.AMQPClientConnection;
 public interface Connector
 {
    void start();
-   AMQPClientConnection connect(String host, int port) throws Exception;
+   AMQPClientConnectionContext connect(String host, int port) throws Exception;
 }

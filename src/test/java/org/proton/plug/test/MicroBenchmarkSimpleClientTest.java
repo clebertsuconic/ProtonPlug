@@ -24,10 +24,10 @@ import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.message.impl.MessageImpl;
-import org.proton.plug.AMQPClientConnection;
-import org.proton.plug.AMQPClientReceiver;
-import org.proton.plug.AMQPClientSender;
-import org.proton.plug.AMQPClientSession;
+import org.proton.plug.AMQPClientConnectionContext;
+import org.proton.plug.AMQPClientReceiverContext;
+import org.proton.plug.AMQPClientSenderContext;
+import org.proton.plug.AMQPClientSessionContext;
 import org.proton.plug.SASLPlain;
 import org.proton.plug.test.minimalclient.Connector;
 import org.proton.plug.test.util.SimpleServerAbstractTest;
@@ -68,11 +68,11 @@ public class MicroBenchmarkSimpleClientTest extends SimpleServerAbstractTest
    {
       Connector connector1 = newConnector();
       connector1.start();
-      final AMQPClientConnection clientConnection = connector1.connect("127.0.0.1", 5672);
+      final AMQPClientConnectionContext clientConnection = connector1.connect("127.0.0.1", 5672);
       clientConnection.clientOpen(useSASL ? new SASLPlain("AA", "AA") : null);
 
 
-      final AMQPClientConnection connectionConsumer = connector1.connect("127.0.0.1", 5672);
+      final AMQPClientConnectionContext connectionConsumer = connector1.connect("127.0.0.1", 5672);
       connectionConsumer.clientOpen(useSASL ? new SASLPlain("AA", "AA") : null);
 
 
@@ -88,8 +88,8 @@ public class MicroBenchmarkSimpleClientTest extends SimpleServerAbstractTest
          {
             try
             {
-               AMQPClientSession sessionConsumer = connectionConsumer.createClientSession();
-               AMQPClientReceiver receiver = sessionConsumer.createReceiver("Test");
+               AMQPClientSessionContext sessionConsumer = connectionConsumer.createClientSession();
+               AMQPClientReceiverContext receiver = sessionConsumer.createReceiver("Test");
                receiver.flow(500);
 
                int received = 0;
@@ -126,10 +126,10 @@ public class MicroBenchmarkSimpleClientTest extends SimpleServerAbstractTest
          }
       });
 
-      AMQPClientSession session = clientConnection.createClientSession();
+      AMQPClientSessionContext session = clientConnection.createClientSession();
       t.start();
 
-      AMQPClientSender sender = session.createSender("Test", true);
+      AMQPClientSenderContext sender = session.createSender("Test", true);
       for (int i = 0; i < numMessages; i++)
       {
          MessageImpl message = (MessageImpl) Message.Factory.create();
