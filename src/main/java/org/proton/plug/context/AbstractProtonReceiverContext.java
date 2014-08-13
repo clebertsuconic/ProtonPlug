@@ -21,11 +21,11 @@ import org.proton.plug.exceptions.HornetQAMQPException;
  *         <p/>
  *         handles incoming messages via a Proton Receiver and forwards them to HornetQ
  */
-public abstract class AbstractProtonReceiver extends ProtonInitializable implements ProtonDeliveryHandler
+public abstract class AbstractProtonReceiverContext extends ProtonInitializable implements ProtonDeliveryHandler
 {
-   protected final AbstractConnection connection;
+   protected final AbstractConnectionContext connection;
 
-   protected final SessionExtension protonSession;
+   protected final AbstractProtonSessionContext protonSession;
 
    protected final Receiver receiver;
 
@@ -33,7 +33,7 @@ public abstract class AbstractProtonReceiver extends ProtonInitializable impleme
 
    protected final ProtonSessionCallback sessionSPI;
 
-   public AbstractProtonReceiver(ProtonSessionCallback sessionSPI, AbstractConnection connection, SessionExtension protonSession, Receiver receiver)
+   public AbstractProtonReceiverContext(ProtonSessionCallback sessionSPI, AbstractConnectionContext connection, AbstractProtonSessionContext protonSession, Receiver receiver)
    {
       this.connection = connection;
       this.protonSession = protonSession;

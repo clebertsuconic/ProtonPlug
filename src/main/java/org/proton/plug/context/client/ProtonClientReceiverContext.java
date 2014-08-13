@@ -24,10 +24,10 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.ProtonJMessage;
 import org.apache.qpid.proton.message.impl.MessageImpl;
 import org.proton.plug.AMQPClientReceiver;
-import org.proton.plug.context.AbstractConnection;
+import org.proton.plug.context.AbstractConnectionContext;
+import org.proton.plug.context.AbstractProtonReceiverContext;
+import org.proton.plug.context.AbstractProtonSessionContext;
 import org.proton.plug.exceptions.HornetQAMQPException;
-import org.proton.plug.context.AbstractProtonReceiver;
-import org.proton.plug.context.SessionExtension;
 import org.proton.plug.context.ProtonSessionCallback;
 
 import static org.proton.plug.util.DeliveryUtil.readDelivery;
@@ -36,9 +36,9 @@ import static org.proton.plug.util.DeliveryUtil.decodeMessageImpl;
 /**
  * @author Clebert Suconic
  */
-public class ProtonClientReceiver extends AbstractProtonReceiver implements AMQPClientReceiver
+public class ProtonClientReceiverContext extends AbstractProtonReceiverContext implements AMQPClientReceiver
 {
-   public ProtonClientReceiver(ProtonSessionCallback sessionSPI, AbstractConnection connection, SessionExtension protonSession, Receiver receiver)
+   public ProtonClientReceiverContext(ProtonSessionCallback sessionSPI, AbstractConnectionContext connection, AbstractProtonSessionContext protonSession, Receiver receiver)
    {
       super(sessionSPI, connection, protonSession, receiver);
    }

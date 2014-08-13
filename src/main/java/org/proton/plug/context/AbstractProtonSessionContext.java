@@ -30,9 +30,9 @@ import org.proton.plug.exceptions.HornetQAMQPInternalErrorException;
  *
  * @author Clebert Suconic
  */
-public abstract class SessionExtension extends ProtonInitializable
+public abstract class AbstractProtonSessionContext extends ProtonInitializable
 {
-   protected final AbstractConnection connection;
+   protected final AbstractConnectionContext connection;
 
    protected final ProtonSessionCallback sessionSPI;
 
@@ -40,13 +40,13 @@ public abstract class SessionExtension extends ProtonInitializable
 
    private long currentTag = 0;
 
-   protected Map<Receiver, AbstractProtonReceiver> receivers = new HashMap<Receiver, AbstractProtonReceiver>();
+   protected Map<Receiver, AbstractProtonReceiverContext> receivers = new HashMap<Receiver, AbstractProtonReceiverContext>();
 
-   protected Map<Sender, AbstractProtonSender> senders = new HashMap<Sender, AbstractProtonSender>();
+   protected Map<Sender, AbstractProtonContextSender> senders = new HashMap<Sender, AbstractProtonContextSender>();
 
    protected boolean closed = false;
 
-   public SessionExtension(ProtonSessionCallback sessionSPI, AbstractConnection connection, Session session)
+   public AbstractProtonSessionContext(ProtonSessionCallback sessionSPI, AbstractConnectionContext connection, Session session)
    {
       this.connection = connection;
       this.sessionSPI = sessionSPI;
@@ -76,7 +76,7 @@ public abstract class SessionExtension extends ProtonInitializable
 
    public void disconnect(Object consumer, String queueName)
    {
-      AbstractProtonSender protonConsumer = senders.remove(consumer);
+      AbstractProtonContextSender protonConsumer = senders.remove(consumer);
       if (protonConsumer != null)
       {
          try
@@ -109,7 +109,7 @@ public abstract class SessionExtension extends ProtonInitializable
          return;
       }
 
-      for (AbstractProtonReceiver protonProducer : receivers.values())
+      for (AbstractProtonReceiverContext protonProducer : receivers.values())
       {
          try
          {
@@ -122,7 +122,7 @@ public abstract class SessionExtension extends ProtonInitializable
          }
       }
       receivers.clear();
-      for (AbstractProtonSender protonConsumer : senders.values())
+      for (AbstractProtonContextSender protonConsumer : senders.values())
       {
          try
          {

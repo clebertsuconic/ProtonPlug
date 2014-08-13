@@ -18,11 +18,11 @@ import org.apache.qpid.proton.engine.Session;
 import org.proton.plug.AMQPClientConnection;
 import org.proton.plug.AMQPClientSession;
 import org.proton.plug.ClientSASL;
-import org.proton.plug.context.AbstractConnection;
+import org.proton.plug.context.AbstractConnectionContext;
+import org.proton.plug.context.AbstractProtonSessionContext;
 import org.proton.plug.exceptions.HornetQAMQPException;
 import org.proton.plug.context.ProtonConnectionCallback;
 import org.proton.plug.context.ProtonInitializable;
-import org.proton.plug.context.SessionExtension;
 import org.proton.plug.context.ProtonSessionCallback;
 import org.proton.plug.util.FutureRunnable;
 
@@ -30,9 +30,9 @@ import org.proton.plug.util.FutureRunnable;
  * @author Clebert Suconic
  */
 
-public class ProtonClientConnectionImpl extends AbstractConnection implements AMQPClientConnection
+public class ProtonClientConnectionContext extends AbstractConnectionContext implements AMQPClientConnection
 {
-   public ProtonClientConnectionImpl(ProtonConnectionCallback connectionCallback)
+   public ProtonClientConnectionContext(ProtonConnectionCallback connectionCallback)
    {
       super(connectionCallback);
    }
@@ -60,11 +60,11 @@ public class ProtonClientConnectionImpl extends AbstractConnection implements AM
    {
 
       FutureRunnable futureRunnable =  new FutureRunnable(1);
-      ProtonClientSessionImpl sessionImpl;
+      ProtonClientSessionContext sessionImpl;
       synchronized (handler.getLock())
       {
          Session session = handler.getConnection().session();
-         sessionImpl = (ProtonClientSessionImpl) getSessionExtension(session);
+         sessionImpl = (ProtonClientSessionContext) getSessionExtension(session);
          sessionImpl.afterInit(futureRunnable);
          session.open();
       }
@@ -76,10 +76,10 @@ public class ProtonClientConnectionImpl extends AbstractConnection implements AM
    }
 
    @Override
-   protected SessionExtension newSessionExtension(Session realSession) throws HornetQAMQPException
+   protected AbstractProtonSessionContext newSessionExtension(Session realSession) throws HornetQAMQPException
    {
-      ProtonSessionCallback sessionSPI = connectionCallback.createSessionSPI(this);
-      SessionExtension protonSession = new ProtonClientSessionImpl(sessionSPI, this, realSession);
+      ProtonSessionCallback sessionSPI = connectionCallback.createSessionCallback(this);
+      AbstractProtonSessionContext protonSession = new ProtonClientSessionContext(sessionSPI, this, realSession);
 
       return protonSession;
 

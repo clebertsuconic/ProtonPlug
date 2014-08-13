@@ -18,10 +18,10 @@ import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
-import org.proton.plug.context.AbstractConnection;
+import org.proton.plug.context.AbstractConnectionContext;
+import org.proton.plug.context.AbstractProtonSessionContext;
 import org.proton.plug.exceptions.HornetQAMQPException;
 import org.proton.plug.context.ProtonConnectionCallback;
-import org.proton.plug.context.SessionExtension;
 import org.proton.plug.handler.SASLMechanism;
 import org.proton.plug.context.ProtonSessionCallback;
 
@@ -29,9 +29,9 @@ import org.proton.plug.context.ProtonSessionCallback;
  * @author Clebert Suconic
  */
 
-public class ServerConnection extends AbstractConnection
+public class ProtonServerConnectionContext extends AbstractConnectionContext
 {
-   public ServerConnection(ProtonConnectionCallback connectionSP)
+   public ProtonServerConnectionContext(ProtonConnectionCallback connectionSP)
    {
       super(connectionSP);
    }
@@ -41,10 +41,10 @@ public class ServerConnection extends AbstractConnection
       handler.createServerSASL(saslMechanisms);
    }
 
-   protected SessionExtension newSessionExtension(Session realSession) throws HornetQAMQPException
+   protected AbstractProtonSessionContext newSessionExtension(Session realSession) throws HornetQAMQPException
    {
-      ProtonSessionCallback sessionSPI = connectionCallback.createSessionSPI(this);
-      SessionExtension protonSession = new ServerProtonSessionImpl(sessionSPI, this, realSession);
+      ProtonSessionCallback sessionSPI = connectionCallback.createSessionCallback(this);
+      AbstractProtonSessionContext protonSession = new ProtonServerSessionContext(sessionSPI, this, realSession);
 
       return protonSession;
    }
@@ -52,7 +52,7 @@ public class ServerConnection extends AbstractConnection
    protected void remoteLinkOpened(Link link) throws Exception
    {
 
-      ServerProtonSessionImpl protonSession = (ServerProtonSessionImpl)getSessionExtension(link.getSession());
+      ProtonServerSessionContext protonSession = (ProtonServerSessionContext)getSessionExtension(link.getSession());
 
       link.setSource(link.getRemoteSource());
       link.setTarget(link.getRemoteTarget());

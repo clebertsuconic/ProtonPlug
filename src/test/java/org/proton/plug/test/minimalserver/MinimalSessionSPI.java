@@ -22,9 +22,9 @@ import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.ProtonJMessage;
+import org.proton.plug.context.AbstractProtonSessionContext;
 import org.proton.plug.context.ProtonPlugSender;
-import org.proton.plug.context.SessionExtension;
-import org.proton.plug.context.server.ServerProtonSessionImpl;
+import org.proton.plug.context.server.ProtonServerSessionContext;
 import org.proton.plug.handler.SASLResult;
 import org.proton.plug.context.ProtonSessionCallback;
 import org.proton.plug.util.ProtonServerMessage;
@@ -37,12 +37,12 @@ public class MinimalSessionSPI implements ProtonSessionCallback
 {
 
    private SASLResult result;
-   ServerProtonSessionImpl session;
+   ProtonServerSessionContext session;
 
    @Override
-   public void init(SessionExtension session, SASLResult result)
+   public void init(AbstractProtonSessionContext session, SASLResult result)
    {
-      this.session = (ServerProtonSessionImpl)session;
+      this.session = (ProtonServerSessionContext)session;
       this.result = result;
    }
 

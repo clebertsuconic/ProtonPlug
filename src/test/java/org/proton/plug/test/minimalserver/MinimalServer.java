@@ -37,7 +37,7 @@ import io.netty.util.ResourceLeakDetector;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
 import org.proton.plug.AMQPConnection;
-import org.proton.plug.context.server.ProtonServerConnectionFactory;
+import org.proton.plug.context.server.ProtonServerConnectionContextFactory;
 import org.proton.plug.util.ByteUtil;
 import org.proton.plug.util.DebugInfo;
 
@@ -141,7 +141,7 @@ public class MinimalServer
       public void channelActive(ChannelHandlerContext ctx) throws Exception
       {
          super.channelActive(ctx);
-         connection = ProtonServerConnectionFactory.getFactory().createConnection(new MinimalConnectionSPI(ctx.channel()));
+         connection = ProtonServerConnectionContextFactory.getFactory().createConnection(new MinimalConnectionSPI(ctx.channel()));
          //ctx.read();
       }
 

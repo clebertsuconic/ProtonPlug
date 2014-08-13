@@ -14,7 +14,7 @@
 package org.proton.plug.test.invm;
 
 import org.proton.plug.AMQPClientConnection;
-import org.proton.plug.context.client.ProtonClientConnectionImpl;
+import org.proton.plug.context.client.ProtonClientConnectionContext;
 import org.proton.plug.test.minimalclient.Connector;
 
 /**
@@ -32,6 +32,6 @@ public class InVMTestConnector implements Connector
    @Override
    public AMQPClientConnection connect(String host, int port) throws Exception
    {
-      return new ProtonClientConnectionImpl(new ProtonINVMSPI());
+      return new ProtonClientConnectionContext(new ProtonINVMSPI());
    }
 }

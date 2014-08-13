@@ -21,10 +21,10 @@ import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.message.ProtonJMessage;
 import org.proton.plug.AMQPClientSender;
-import org.proton.plug.context.AbstractConnection;
+import org.proton.plug.context.AbstractConnectionContext;
+import org.proton.plug.context.AbstractProtonContextSender;
+import org.proton.plug.context.AbstractProtonSessionContext;
 import org.proton.plug.exceptions.HornetQAMQPException;
-import org.proton.plug.context.AbstractProtonSender;
-import org.proton.plug.context.SessionExtension;
 import org.proton.plug.context.ProtonSessionCallback;
 import org.proton.plug.util.FutureRunnable;
 
@@ -32,12 +32,12 @@ import org.proton.plug.util.FutureRunnable;
  * @author Clebert Suconic
  */
 
-public class ProtonClientSender extends AbstractProtonSender implements AMQPClientSender
+public class ProtonClientContext extends AbstractProtonContextSender implements AMQPClientSender
 {
 
    FutureRunnable catchUpRunnable = new FutureRunnable();
 
-   public ProtonClientSender(AbstractConnection connection, Sender sender, SessionExtension protonSession, ProtonSessionCallback server)
+   public ProtonClientContext(AbstractConnectionContext connection, Sender sender, AbstractProtonSessionContext protonSession, ProtonSessionCallback server)
    {
       super(connection, sender, protonSession, server);
    }

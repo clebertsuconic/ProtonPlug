@@ -31,17 +31,17 @@ import org.proton.plug.handler.impl.DefaultEventHandler;
 /**
  * Clebert Suconic
  */
-public abstract class AbstractConnection extends ProtonInitializable implements AMQPConnection
+public abstract class AbstractConnectionContext extends ProtonInitializable implements AMQPConnection
 {
 
    protected ProtonHandler handler = ProtonHandler.Factory.create();
 
    protected ProtonConnectionCallback connectionCallback;
 
-   private final Map<Session, SessionExtension> sessions = new ConcurrentHashMap<>();
+   private final Map<Session, AbstractProtonSessionContext> sessions = new ConcurrentHashMap<>();
 
 
-   public AbstractConnection(ProtonConnectionCallback connectionCallback)
+   public AbstractConnectionContext(ProtonConnectionCallback connectionCallback)
    {
       this.connectionCallback = connectionCallback;
       connectionCallback.setConnection(this);
@@ -92,9 +92,9 @@ public abstract class AbstractConnection extends ProtonInitializable implements 
       handler.close();
    }
 
-   protected SessionExtension getSessionExtension(Session realSession) throws HornetQAMQPException
+   protected AbstractProtonSessionContext getSessionExtension(Session realSession) throws HornetQAMQPException
    {
-      SessionExtension sessionExtension = sessions.get(realSession);
+      AbstractProtonSessionContext sessionExtension = sessions.get(realSession);
       if (sessionExtension == null)
       {
          // how this is possible? Log a warn here
@@ -108,7 +108,7 @@ public abstract class AbstractConnection extends ProtonInitializable implements 
    protected abstract void remoteLinkOpened(Link link) throws Exception;
 
 
-   protected abstract SessionExtension newSessionExtension(Session realSession) throws HornetQAMQPException;
+   protected abstract AbstractProtonSessionContext newSessionExtension(Session realSession) throws HornetQAMQPException;
 
    @Override
    public boolean checkDataReceived()
@@ -128,7 +128,7 @@ public abstract class AbstractConnection extends ProtonInitializable implements 
       // handler.outputBuffer has the lock
       while ((bytes = handler.outputBuffer()) != null)
       {
-         connectionCallback.onTransport(bytes, AbstractConnection.this);
+         connectionCallback.onTransport(bytes, AbstractConnectionContext.this);
       }
    }
 
@@ -147,7 +147,7 @@ public abstract class AbstractConnection extends ProtonInitializable implements 
       {
          synchronized (getLock())
          {
-            connection.setContext(AbstractConnection.this);
+            connection.setContext(AbstractConnectionContext.this);
             connection.open();
          }
          initialise();
@@ -159,7 +159,7 @@ public abstract class AbstractConnection extends ProtonInitializable implements 
       {
          synchronized (getLock())
          {
-            for (SessionExtension protonSession : sessions.values())
+            for (AbstractProtonSessionContext protonSession : sessions.values())
             {
                protonSession.close();
             }
@@ -195,7 +195,7 @@ public abstract class AbstractConnection extends ProtonInitializable implements 
             session.close();
          }
 
-         SessionExtension sessionContext = (SessionExtension) session.getContext();
+         AbstractProtonSessionContext sessionContext = (AbstractProtonSessionContext) session.getContext();
          if (sessionContext != null)
          {
             sessionContext.close();

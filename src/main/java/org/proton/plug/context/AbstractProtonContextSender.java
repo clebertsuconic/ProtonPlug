@@ -28,17 +28,17 @@ import org.proton.plug.util.NettyWritable;
  *
  * @author <a href="mailto:andy.taylor@jboss.org">Andy Taylor</a>
  */
-public abstract class AbstractProtonSender extends ProtonInitializable implements ProtonDeliveryHandler
+public abstract class AbstractProtonContextSender extends ProtonInitializable implements ProtonDeliveryHandler
 {
-   protected final SessionExtension protonSession;
+   protected final AbstractProtonSessionContext protonSession;
    protected final Sender sender;
-   protected final AbstractConnection connection;
+   protected final AbstractConnectionContext connection;
    protected boolean closed = false;
    protected final ProtonSessionCallback sessionSPI;
    protected CreditsSemaphore creditsSemaphore = new CreditsSemaphore(0);
 
 
-   public AbstractProtonSender(AbstractConnection connection, Sender sender, SessionExtension protonSession, ProtonSessionCallback server)
+   public AbstractProtonContextSender(AbstractConnectionContext connection, Sender sender, AbstractProtonSessionContext protonSession, ProtonSessionCallback server)
    {
       this.connection = connection;
       this.sender = sender;

@@ -34,12 +34,12 @@ import static org.proton.plug.util.DeliveryUtil.readDelivery;
 /**
  * handles an amqp Coordinator to deal with transaction boundaries etc
  */
-public class TransactionHandler implements ProtonDeliveryHandler
+public class ProtonTransactionHandler implements ProtonDeliveryHandler
 {
 
    final ProtonSessionCallback sessionSPI;
 
-   public TransactionHandler(ProtonSessionCallback sessionSPI)
+   public ProtonTransactionHandler(ProtonSessionCallback sessionSPI)
    {
       this.sessionSPI = sessionSPI;
    }

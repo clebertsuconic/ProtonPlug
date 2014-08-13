@@ -22,9 +22,9 @@ import org.apache.qpid.proton.engine.Session;
 import org.proton.plug.AMQPClientReceiver;
 import org.proton.plug.AMQPClientSender;
 import org.proton.plug.AMQPClientSession;
-import org.proton.plug.context.AbstractConnection;
+import org.proton.plug.context.AbstractConnectionContext;
+import org.proton.plug.context.AbstractProtonSessionContext;
 import org.proton.plug.exceptions.HornetQAMQPException;
-import org.proton.plug.context.SessionExtension;
 import org.proton.plug.context.ProtonSessionCallback;
 import org.proton.plug.util.FutureRunnable;
 
@@ -32,9 +32,9 @@ import org.proton.plug.util.FutureRunnable;
  * @author Clebert Suconic
  */
 
-public class ProtonClientSessionImpl extends SessionExtension implements AMQPClientSession
+public class ProtonClientSessionContext extends AbstractProtonSessionContext implements AMQPClientSession
 {
-   public ProtonClientSessionImpl(ProtonSessionCallback sessionSPI, AbstractConnection connection, Session session)
+   public ProtonClientSessionContext(ProtonSessionCallback sessionSPI, AbstractConnectionContext connection, Session session)
    {
       super(sessionSPI, connection, session);
    }
@@ -43,7 +43,7 @@ public class ProtonClientSessionImpl extends SessionExtension implements AMQPCli
    {
       FutureRunnable futureRunnable =  new FutureRunnable(1);
 
-      ProtonClientSender amqpSender;
+      ProtonClientContext amqpSender;
       synchronized (connection.getLock())
       {
          Sender sender = session.sender(address);
@@ -51,7 +51,7 @@ public class ProtonClientSessionImpl extends SessionExtension implements AMQPCli
          Target target = new Target();
          target.setAddress(address);
          sender.setTarget(target);
-         amqpSender = new ProtonClientSender(connection, sender, this, sessionSPI);
+         amqpSender = new ProtonClientContext(connection, sender, this, sessionSPI);
          amqpSender.afterInit(futureRunnable);
          sender.setContext(amqpSender);
          sender.open();
@@ -67,7 +67,7 @@ public class ProtonClientSessionImpl extends SessionExtension implements AMQPCli
    {
       FutureRunnable futureRunnable =  new FutureRunnable(1);
 
-      ProtonClientReceiver amqpReceiver;
+      ProtonClientReceiverContext amqpReceiver;
 
       synchronized (connection.getLock())
       {
@@ -75,7 +75,7 @@ public class ProtonClientSessionImpl extends SessionExtension implements AMQPCli
          Source source = new Source();
          source.setAddress(address);
          receiver.setSource(source);
-         amqpReceiver = new ProtonClientReceiver(sessionSPI, connection, this, receiver);
+         amqpReceiver = new ProtonClientReceiverContext(sessionSPI, connection, this, receiver);
          receiver.setContext(amqpReceiver);
          amqpReceiver.afterInit(futureRunnable);
          receiver.open();

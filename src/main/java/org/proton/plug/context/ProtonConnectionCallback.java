@@ -31,7 +31,7 @@ public interface ProtonConnectionCallback
     */
    void onTransport(ByteBuf bytes, AMQPConnection connection);
 
-   ProtonSessionCallback createSessionSPI(AMQPConnection connection);
+   ProtonSessionCallback createSessionCallback(AMQPConnection connection);
 
    // TODO: REMOVE THIS! The caller doing this can do it
    void setConnection(AMQPConnection connection);

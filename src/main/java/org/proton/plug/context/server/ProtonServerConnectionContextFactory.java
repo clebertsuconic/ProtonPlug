@@ -16,15 +16,14 @@ package org.proton.plug.context.server;
 import org.proton.plug.AMQPConnection;
 import org.proton.plug.AMQPConnectionFactory;
 import org.proton.plug.context.ProtonConnectionCallback;
-import org.proton.plug.handler.SASLMechanism;
 
 /**
  * @author Clebert Suconic
  */
 
-public class ProtonServerConnectionFactory extends AMQPConnectionFactory
+public class ProtonServerConnectionContextFactory extends AMQPConnectionFactory
 {
-   private static final AMQPConnectionFactory theInstance = new ProtonServerConnectionFactory();
+   private static final AMQPConnectionFactory theInstance = new ProtonServerConnectionContextFactory();
    public static AMQPConnectionFactory getFactory()
    {
       return theInstance;
@@ -32,7 +31,7 @@ public class ProtonServerConnectionFactory extends AMQPConnectionFactory
 
    public AMQPConnection createConnection(ProtonConnectionCallback connectionCallback)
    {
-      ServerConnection connection = new ServerConnection(connectionCallback);
+      ProtonServerConnectionContext connection = new ProtonServerConnectionContext(connectionCallback);
       return connection;
    }
 }

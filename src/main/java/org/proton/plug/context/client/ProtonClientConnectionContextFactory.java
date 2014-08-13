@@ -21,9 +21,9 @@ import org.proton.plug.context.ProtonConnectionCallback;
  * @author Clebert Suconic
  */
 
-public class ProtonClientConnectionFactory extends AMQPConnectionFactory
+public class ProtonClientConnectionContextFactory extends AMQPConnectionFactory
 {
-   private static final AMQPConnectionFactory theInstance = new ProtonClientConnectionFactory();
+   private static final AMQPConnectionFactory theInstance = new ProtonClientConnectionContextFactory();
    public static AMQPConnectionFactory getFactory()
    {
       return theInstance;
@@ -31,7 +31,7 @@ public class ProtonClientConnectionFactory extends AMQPConnectionFactory
 
    public AMQPConnection createConnection(ProtonConnectionCallback connectionCallback)
    {
-      return new ProtonClientConnectionImpl(connectionCallback);
+      return new ProtonClientConnectionContext(connectionCallback);
    }
 
 

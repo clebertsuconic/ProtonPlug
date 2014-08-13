@@ -137,7 +137,7 @@ public class MinimalConnectionSPI implements ProtonConnectionCallback
    }
 
    @Override
-   public ProtonSessionCallback createSessionSPI(AMQPConnection connection)
+   public ProtonSessionCallback createSessionCallback(AMQPConnection connection)
    {
       return new MinimalSessionSPI();
    }

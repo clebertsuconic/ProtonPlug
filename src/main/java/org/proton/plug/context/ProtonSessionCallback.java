@@ -18,9 +18,6 @@ import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.ProtonJMessage;
-import org.proton.plug.context.ProtonPlugSender;
-import org.proton.plug.context.SessionExtension;
-import org.proton.plug.handler.SASLMechanism;
 import org.proton.plug.handler.SASLResult;
 
 /**
@@ -31,7 +28,7 @@ import org.proton.plug.handler.SASLResult;
 public interface ProtonSessionCallback
 {
 
-   void init(SessionExtension session, SASLResult saslResult) throws Exception;
+   void init(AbstractProtonSessionContext session, SASLResult saslResult) throws Exception;
 
    void start();
 
