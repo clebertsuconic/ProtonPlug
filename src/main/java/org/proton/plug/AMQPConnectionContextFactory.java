@@ -13,8 +13,6 @@
 
 package org.proton.plug;
 
-import org.proton.plug.context.ProtonConnectionCallback;
-
 /**
  * @author Clebert Suconic
  */
@@ -24,5 +22,5 @@ public abstract class AMQPConnectionContextFactory
    /**
     * @return
     */
-   public abstract AMQPConnectionContext createConnection(ProtonConnectionCallback connectionCallback);
+   public abstract AMQPConnectionContext createConnection(AMQPConnectionCallback connectionCallback);
 }

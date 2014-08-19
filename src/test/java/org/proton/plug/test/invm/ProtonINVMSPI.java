@@ -18,9 +18,9 @@ import java.util.concurrent.Executors;
 
 import io.netty.buffer.ByteBuf;
 import org.proton.plug.AMQPConnectionContext;
-import org.proton.plug.context.ProtonConnectionCallback;
+import org.proton.plug.AMQPConnectionCallback;
+import org.proton.plug.AMQPSessionCallback;
 import org.proton.plug.context.server.ProtonServerConnectionContext;
-import org.proton.plug.context.ProtonSessionCallback;
 import org.proton.plug.test.minimalserver.MinimalSessionSPI;
 import org.proton.plug.util.ByteUtil;
 import org.proton.plug.util.DebugInfo;
@@ -29,7 +29,7 @@ import org.proton.plug.util.DebugInfo;
  * @author Clebert Suconic
  */
 
-public class ProtonINVMSPI implements ProtonConnectionCallback
+public class ProtonINVMSPI implements AMQPConnectionCallback
 {
 
    AMQPConnectionContext returningConnection;
@@ -115,12 +115,12 @@ public class ProtonINVMSPI implements ProtonConnectionCallback
    }
 
    @Override
-   public ProtonSessionCallback createSessionCallback(AMQPConnectionContext connection)
+   public AMQPSessionCallback createSessionCallback(AMQPConnectionContext connection)
    {
       return null;
    }
 
-   class ReturnSPI implements ProtonConnectionCallback
+   class ReturnSPI implements AMQPConnectionCallback
    {
       @Override
       public void close()
@@ -172,7 +172,7 @@ public class ProtonINVMSPI implements ProtonConnectionCallback
       }
 
       @Override
-      public ProtonSessionCallback createSessionCallback(AMQPConnectionContext connection)
+      public AMQPSessionCallback createSessionCallback(AMQPConnectionContext connection)
       {
          return new MinimalSessionSPI();
       }

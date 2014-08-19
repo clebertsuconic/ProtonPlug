@@ -21,13 +21,13 @@ import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
+import org.proton.plug.AMQPSessionCallback;
 import org.proton.plug.context.AbstractConnectionContext;
 import org.proton.plug.context.AbstractProtonContextSender;
 import org.proton.plug.context.AbstractProtonReceiverContext;
 import org.proton.plug.context.AbstractProtonSessionContext;
 import org.proton.plug.context.ProtonTransactionHandler;
 import org.proton.plug.exceptions.HornetQAMQPException;
-import org.proton.plug.context.ProtonSessionCallback;
 
 /**
  * @author Clebert Suconic
@@ -36,7 +36,7 @@ import org.proton.plug.context.ProtonSessionCallback;
 public class ProtonServerSessionContext extends AbstractProtonSessionContext
 {
 
-   public ProtonServerSessionContext(ProtonSessionCallback sessionSPI, AbstractConnectionContext connection, Session session)
+   public ProtonServerSessionContext(AMQPSessionCallback sessionSPI, AbstractConnectionContext connection, Session session)
    {
       super(sessionSPI, connection, session);
    }

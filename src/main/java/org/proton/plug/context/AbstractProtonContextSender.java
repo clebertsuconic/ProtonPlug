@@ -19,6 +19,7 @@ import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.message.ProtonJMessage;
+import org.proton.plug.AMQPSessionCallback;
 import org.proton.plug.exceptions.HornetQAMQPException;
 import org.proton.plug.util.CreditsSemaphore;
 import org.proton.plug.util.NettyWritable;
@@ -34,11 +35,11 @@ public abstract class AbstractProtonContextSender extends ProtonInitializable im
    protected final Sender sender;
    protected final AbstractConnectionContext connection;
    protected boolean closed = false;
-   protected final ProtonSessionCallback sessionSPI;
+   protected final AMQPSessionCallback sessionSPI;
    protected CreditsSemaphore creditsSemaphore = new CreditsSemaphore(0);
 
 
-   public AbstractProtonContextSender(AbstractConnectionContext connection, Sender sender, AbstractProtonSessionContext protonSession, ProtonSessionCallback server)
+   public AbstractProtonContextSender(AbstractConnectionContext connection, Sender sender, AbstractProtonSessionContext protonSession, AMQPSessionCallback server)
    {
       this.connection = connection;
       this.sender = sender;

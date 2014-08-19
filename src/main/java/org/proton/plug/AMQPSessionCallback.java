@@ -11,13 +11,15 @@
  * permissions and limitations under the License.
  */
 
-package org.proton.plug.context;
+package org.proton.plug;
 
 import io.netty.buffer.ByteBuf;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.ProtonJMessage;
+import org.proton.plug.context.AbstractProtonSessionContext;
+import org.proton.plug.context.ProtonPlugSender;
 import org.proton.plug.handler.SASLResult;
 
 /**
@@ -25,10 +27,10 @@ import org.proton.plug.handler.SASLResult;
  * @author Clebert Suconic
  */
 
-public interface ProtonSessionCallback
+public interface AMQPSessionCallback
 {
 
-   void init(AbstractProtonSessionContext session, SASLResult saslResult) throws Exception;
+   void init(AMQPSessionContext session, SASLResult saslResult) throws Exception;
 
    void start();
 

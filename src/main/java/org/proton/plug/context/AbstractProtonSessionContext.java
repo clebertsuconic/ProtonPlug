@@ -20,6 +20,7 @@ import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
+import org.proton.plug.AMQPSessionCallback;
 import org.proton.plug.AMQPSessionContext;
 import org.proton.plug.exceptions.HornetQAMQPException;
 import org.proton.plug.exceptions.HornetQAMQPInternalErrorException;
@@ -35,7 +36,7 @@ public abstract class AbstractProtonSessionContext extends ProtonInitializable i
 {
    protected final AbstractConnectionContext connection;
 
-   protected final ProtonSessionCallback sessionSPI;
+   protected final AMQPSessionCallback sessionSPI;
 
    protected final Session session;
 
@@ -47,7 +48,7 @@ public abstract class AbstractProtonSessionContext extends ProtonInitializable i
 
    protected boolean closed = false;
 
-   public AbstractProtonSessionContext(ProtonSessionCallback sessionSPI, AbstractConnectionContext connection, Session session)
+   public AbstractProtonSessionContext(AMQPSessionCallback sessionSPI, AbstractConnectionContext connection, Session session)
    {
       this.connection = connection;
       this.sessionSPI = sessionSPI;

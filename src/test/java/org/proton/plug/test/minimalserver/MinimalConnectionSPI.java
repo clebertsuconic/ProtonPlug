@@ -22,8 +22,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import org.proton.plug.AMQPConnectionContext;
-import org.proton.plug.context.ProtonConnectionCallback;
-import org.proton.plug.context.ProtonSessionCallback;
+import org.proton.plug.AMQPConnectionCallback;
+import org.proton.plug.AMQPSessionCallback;
 import org.proton.plug.util.ByteUtil;
 import org.proton.plug.util.DebugInfo;
 import org.proton.plug.util.ReusableLatch;
@@ -32,7 +32,7 @@ import org.proton.plug.util.ReusableLatch;
  * @author Clebert Suconic
  */
 
-public class MinimalConnectionSPI implements ProtonConnectionCallback
+public class MinimalConnectionSPI implements AMQPConnectionCallback
 {
    Channel channel;
 
@@ -137,7 +137,7 @@ public class MinimalConnectionSPI implements ProtonConnectionCallback
    }
 
    @Override
-   public ProtonSessionCallback createSessionCallback(AMQPConnectionContext connection)
+   public AMQPSessionCallback createSessionCallback(AMQPConnectionContext connection)
    {
       return new MinimalSessionSPI();
    }

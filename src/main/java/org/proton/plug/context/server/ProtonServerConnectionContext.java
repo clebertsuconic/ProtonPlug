@@ -18,12 +18,12 @@ import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
+import org.proton.plug.AMQPConnectionCallback;
+import org.proton.plug.AMQPSessionCallback;
 import org.proton.plug.context.AbstractConnectionContext;
 import org.proton.plug.context.AbstractProtonSessionContext;
 import org.proton.plug.exceptions.HornetQAMQPException;
-import org.proton.plug.context.ProtonConnectionCallback;
 import org.proton.plug.handler.SASLMechanism;
-import org.proton.plug.context.ProtonSessionCallback;
 
 /**
  * @author Clebert Suconic
@@ -31,7 +31,7 @@ import org.proton.plug.context.ProtonSessionCallback;
 
 public class ProtonServerConnectionContext extends AbstractConnectionContext
 {
-   public ProtonServerConnectionContext(ProtonConnectionCallback connectionSP)
+   public ProtonServerConnectionContext(AMQPConnectionCallback connectionSP)
    {
       super(connectionSP);
    }
@@ -43,7 +43,7 @@ public class ProtonServerConnectionContext extends AbstractConnectionContext
 
    protected AbstractProtonSessionContext newSessionExtension(Session realSession) throws HornetQAMQPException
    {
-      ProtonSessionCallback sessionSPI = connectionCallback.createSessionCallback(this);
+      AMQPSessionCallback sessionSPI = connectionCallback.createSessionCallback(this);
       AbstractProtonSessionContext protonSession = new ProtonServerSessionContext(sessionSPI, this, realSession);
 
       return protonSession;

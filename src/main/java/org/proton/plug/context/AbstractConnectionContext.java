@@ -22,6 +22,7 @@ import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.Transport;
+import org.proton.plug.AMQPConnectionCallback;
 import org.proton.plug.AMQPConnectionContext;
 import org.proton.plug.exceptions.HornetQAMQPException;
 import org.proton.plug.handler.ProtonHandler;
@@ -36,12 +37,12 @@ public abstract class AbstractConnectionContext extends ProtonInitializable impl
 
    protected ProtonHandler handler = ProtonHandler.Factory.create();
 
-   protected ProtonConnectionCallback connectionCallback;
+   protected AMQPConnectionCallback connectionCallback;
 
    private final Map<Session, AbstractProtonSessionContext> sessions = new ConcurrentHashMap<>();
 
 
-   public AbstractConnectionContext(ProtonConnectionCallback connectionCallback)
+   public AbstractConnectionContext(AMQPConnectionCallback connectionCallback)
    {
       this.connectionCallback = connectionCallback;
       connectionCallback.setConnection(this);

@@ -22,10 +22,10 @@ import org.apache.qpid.proton.engine.Session;
 import org.proton.plug.AMQPClientReceiverContext;
 import org.proton.plug.AMQPClientSenderContext;
 import org.proton.plug.AMQPClientSessionContext;
+import org.proton.plug.AMQPSessionCallback;
 import org.proton.plug.context.AbstractConnectionContext;
 import org.proton.plug.context.AbstractProtonSessionContext;
 import org.proton.plug.exceptions.HornetQAMQPException;
-import org.proton.plug.context.ProtonSessionCallback;
 import org.proton.plug.util.FutureRunnable;
 
 /**
@@ -34,7 +34,7 @@ import org.proton.plug.util.FutureRunnable;
 
 public class ProtonClientSessionContext extends AbstractProtonSessionContext implements AMQPClientSessionContext
 {
-   public ProtonClientSessionContext(ProtonSessionCallback sessionSPI, AbstractConnectionContext connection, Session session)
+   public ProtonClientSessionContext(AMQPSessionCallback sessionSPI, AbstractConnectionContext connection, Session session)
    {
       super(sessionSPI, connection, session);
    }

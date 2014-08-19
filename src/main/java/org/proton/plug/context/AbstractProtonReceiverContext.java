@@ -14,6 +14,7 @@
 package org.proton.plug.context;
 
 import org.apache.qpid.proton.engine.Receiver;
+import org.proton.plug.AMQPSessionCallback;
 import org.proton.plug.exceptions.HornetQAMQPException;
 
 /**
@@ -31,9 +32,9 @@ public abstract class AbstractProtonReceiverContext extends ProtonInitializable 
 
    protected final String address;
 
-   protected final ProtonSessionCallback sessionSPI;
+   protected final AMQPSessionCallback sessionSPI;
 
-   public AbstractProtonReceiverContext(ProtonSessionCallback sessionSPI, AbstractConnectionContext connection, AbstractProtonSessionContext protonSession, Receiver receiver)
+   public AbstractProtonReceiverContext(AMQPSessionCallback sessionSPI, AbstractConnectionContext connection, AbstractProtonSessionContext protonSession, Receiver receiver)
    {
       this.connection = connection;
       this.protonSession = protonSession;

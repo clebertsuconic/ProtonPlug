@@ -18,12 +18,12 @@ import org.apache.qpid.proton.engine.Session;
 import org.proton.plug.AMQPClientConnectionContext;
 import org.proton.plug.AMQPClientSessionContext;
 import org.proton.plug.ClientSASL;
+import org.proton.plug.AMQPConnectionCallback;
+import org.proton.plug.AMQPSessionCallback;
 import org.proton.plug.context.AbstractConnectionContext;
 import org.proton.plug.context.AbstractProtonSessionContext;
 import org.proton.plug.exceptions.HornetQAMQPException;
-import org.proton.plug.context.ProtonConnectionCallback;
 import org.proton.plug.context.ProtonInitializable;
-import org.proton.plug.context.ProtonSessionCallback;
 import org.proton.plug.util.FutureRunnable;
 
 /**
@@ -32,7 +32,7 @@ import org.proton.plug.util.FutureRunnable;
 
 public class ProtonClientConnectionContext extends AbstractConnectionContext implements AMQPClientConnectionContext
 {
-   public ProtonClientConnectionContext(ProtonConnectionCallback connectionCallback)
+   public ProtonClientConnectionContext(AMQPConnectionCallback connectionCallback)
    {
       super(connectionCallback);
    }
@@ -78,7 +78,7 @@ public class ProtonClientConnectionContext extends AbstractConnectionContext imp
    @Override
    protected AbstractProtonSessionContext newSessionExtension(Session realSession) throws HornetQAMQPException
    {
-      ProtonSessionCallback sessionSPI = connectionCallback.createSessionCallback(this);
+      AMQPSessionCallback sessionSPI = connectionCallback.createSessionCallback(this);
       AbstractProtonSessionContext protonSession = new ProtonClientSessionContext(sessionSPI, this, realSession);
 
       return protonSession;

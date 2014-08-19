@@ -11,16 +11,15 @@
  * permissions and limitations under the License.
  */
 
-package org.proton.plug.context;
+package org.proton.plug;
 
 import io.netty.buffer.ByteBuf;
-import org.proton.plug.AMQPConnectionContext;
 
 /**
  * @author Clebert Suconic
  */
 
-public interface ProtonConnectionCallback
+public interface AMQPConnectionCallback
 {
    void close();
 
@@ -31,7 +30,7 @@ public interface ProtonConnectionCallback
     */
    void onTransport(ByteBuf bytes, AMQPConnectionContext connection);
 
-   ProtonSessionCallback createSessionCallback(AMQPConnectionContext connection);
+   AMQPSessionCallback createSessionCallback(AMQPConnectionContext connection);
 
    // TODO: REMOVE THIS! The caller doing this can do it
    void setConnection(AMQPConnectionContext connection);

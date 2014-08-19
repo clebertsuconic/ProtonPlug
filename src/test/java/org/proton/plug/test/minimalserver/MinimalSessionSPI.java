@@ -22,25 +22,26 @@ import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.ProtonJMessage;
+import org.proton.plug.AMQPSessionCallback;
+import org.proton.plug.AMQPSessionContext;
 import org.proton.plug.context.AbstractProtonSessionContext;
 import org.proton.plug.context.ProtonPlugSender;
 import org.proton.plug.context.server.ProtonServerSessionContext;
 import org.proton.plug.handler.SASLResult;
-import org.proton.plug.context.ProtonSessionCallback;
 import org.proton.plug.util.ProtonServerMessage;
 
 /**
  * @author Clebert Suconic
  */
 
-public class MinimalSessionSPI implements ProtonSessionCallback
+public class MinimalSessionSPI implements AMQPSessionCallback
 {
 
    private SASLResult result;
    ProtonServerSessionContext session;
 
    @Override
-   public void init(AbstractProtonSessionContext session, SASLResult result)
+   public void init(AMQPSessionContext session, SASLResult result)
    {
       this.session = (ProtonServerSessionContext)session;
       this.result = result;

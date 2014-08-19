@@ -21,13 +21,13 @@ import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
+import org.proton.plug.AMQPSessionCallback;
 import org.proton.plug.context.AbstractConnectionContext;
 import org.proton.plug.context.AbstractProtonReceiverContext;
 import org.proton.plug.context.AbstractProtonSessionContext;
 import org.proton.plug.exceptions.HornetQAMQPException;
 import org.proton.plug.exceptions.HornetQAMQPInternalErrorException;
 import org.proton.plug.logger.HornetQAMQPProtocolMessageBundle;
-import org.proton.plug.context.ProtonSessionCallback;
 
 import static org.proton.plug.util.DeliveryUtil.readDelivery;
 
@@ -40,7 +40,7 @@ public class ProtonServerReceiverContext extends AbstractProtonReceiverContext
 
    private final int numberOfCredits = 100;
 
-   public ProtonServerReceiverContext(ProtonSessionCallback sessionSPI, AbstractConnectionContext connection, AbstractProtonSessionContext protonSession, Receiver receiver)
+   public ProtonServerReceiverContext(AMQPSessionCallback sessionSPI, AbstractConnectionContext connection, AbstractProtonSessionContext protonSession, Receiver receiver)
    {
       super(sessionSPI, connection, protonSession, receiver);
    }

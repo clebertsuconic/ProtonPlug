@@ -25,6 +25,7 @@ import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.impl.MessageImpl;
+import org.proton.plug.AMQPSessionCallback;
 import org.proton.plug.exceptions.HornetQAMQPException;
 import org.proton.plug.logger.HornetQAMQPProtocolMessageBundle;
 
@@ -37,9 +38,9 @@ import static org.proton.plug.util.DeliveryUtil.readDelivery;
 public class ProtonTransactionHandler implements ProtonDeliveryHandler
 {
 
-   final ProtonSessionCallback sessionSPI;
+   final AMQPSessionCallback sessionSPI;
 
-   public ProtonTransactionHandler(ProtonSessionCallback sessionSPI)
+   public ProtonTransactionHandler(AMQPSessionCallback sessionSPI)
    {
       this.sessionSPI = sessionSPI;
    }

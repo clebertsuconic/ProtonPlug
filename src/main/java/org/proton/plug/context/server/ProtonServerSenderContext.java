@@ -26,6 +26,7 @@ import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.message.ProtonJMessage;
+import org.proton.plug.AMQPSessionCallback;
 import org.proton.plug.context.AbstractConnectionContext;
 import org.proton.plug.context.AbstractProtonContextSender;
 import org.proton.plug.context.AbstractProtonSessionContext;
@@ -33,7 +34,6 @@ import org.proton.plug.exceptions.HornetQAMQPException;
 import org.proton.plug.exceptions.HornetQAMQPInternalErrorException;
 import org.proton.plug.logger.HornetQAMQPProtocolMessageBundle;
 import org.proton.plug.context.ProtonPlugSender;
-import org.proton.plug.context.ProtonSessionCallback;
 import org.apache.qpid.proton.amqp.messaging.Source;
 
 /**
@@ -48,7 +48,7 @@ public class ProtonServerSenderContext extends AbstractProtonContextSender imple
 
    private Object brokerConsumer;
 
-   public ProtonServerSenderContext(AbstractConnectionContext connection, Sender sender, AbstractProtonSessionContext protonSession, ProtonSessionCallback server)
+   public ProtonServerSenderContext(AbstractConnectionContext connection, Sender sender, AbstractProtonSessionContext protonSession, AMQPSessionCallback server)
    {
       super(connection, sender, protonSession, server);
    }
