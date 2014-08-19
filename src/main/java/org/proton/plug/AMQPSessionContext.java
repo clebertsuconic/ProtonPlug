@@ -13,15 +13,23 @@
 
 package org.proton.plug;
 
+import org.apache.qpid.proton.engine.Receiver;
+import org.apache.qpid.proton.engine.Sender;
 import org.proton.plug.exceptions.HornetQAMQPException;
 
 /**
  * @author Clebert Suconic
  */
 
-public interface AMQPClientSessionContext extends AMQPSessionContext
+public interface AMQPSessionContext
 {
-   AMQPClientSenderContext createSender(String address, boolean preSettled) throws HornetQAMQPException;
+   byte[] getTag();
 
-   AMQPClientReceiverContext createReceiver(String address) throws HornetQAMQPException;
+   void replaceTag(byte[] tag);
+
+   void close();
+
+   void removeSender(Sender sender) throws HornetQAMQPException;
+
+   void removeReceiver(Receiver receiver);
 }

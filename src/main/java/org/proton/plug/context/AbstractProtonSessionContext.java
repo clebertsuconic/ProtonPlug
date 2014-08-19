@@ -20,6 +20,7 @@ import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
+import org.proton.plug.AMQPSessionContext;
 import org.proton.plug.exceptions.HornetQAMQPException;
 import org.proton.plug.exceptions.HornetQAMQPInternalErrorException;
 
@@ -30,7 +31,7 @@ import org.proton.plug.exceptions.HornetQAMQPInternalErrorException;
  *
  * @author Clebert Suconic
  */
-public abstract class AbstractProtonSessionContext extends ProtonInitializable
+public abstract class AbstractProtonSessionContext extends ProtonInitializable implements AMQPSessionContext
 {
    protected final AbstractConnectionContext connection;
 
@@ -74,6 +75,11 @@ public abstract class AbstractProtonSessionContext extends ProtonInitializable
     }
 
 
+   /**
+    * TODO: maybe it needs to go?
+    * @param consumer
+    * @param queueName
+    */
    public void disconnect(Object consumer, String queueName)
    {
       AbstractProtonContextSender protonConsumer = senders.remove(consumer);
@@ -92,16 +98,19 @@ public abstract class AbstractProtonSessionContext extends ProtonInitializable
    }
 
 
+   @Override
    public byte[] getTag()
    {
       return Long.toHexString(currentTag++).getBytes();
    }
 
+   @Override
    public void replaceTag(byte[] tag)
    {
       // TODO: do we need to reuse this?
    }
 
+   @Override
    public void close()
    {
       if (closed)
@@ -151,11 +160,13 @@ public abstract class AbstractProtonSessionContext extends ProtonInitializable
       closed = true;
    }
 
+   @Override
    public void removeSender(Sender sender) throws HornetQAMQPException
    {
       senders.remove(sender);
    }
 
+   @Override
    public void removeReceiver(Receiver receiver)
    {
       receivers.remove(receiver);
