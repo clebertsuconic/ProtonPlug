@@ -14,6 +14,7 @@
 package org.proton.plug;
 
 import io.netty.buffer.ByteBuf;
+import org.proton.plug.handler.SASLMechanism;
 import org.proton.plug.handler.SASLResult;
 
 /**
@@ -30,6 +31,8 @@ public interface AMQPConnectionContext
    boolean checkDataReceived();
 
    long getCreationTime();
+
+   void createServerSASL(SASLMechanism[] saslMechanisms);
 
    SASLResult getSASLResult();
 
