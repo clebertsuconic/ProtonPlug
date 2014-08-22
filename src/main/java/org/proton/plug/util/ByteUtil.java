@@ -108,6 +108,48 @@ public class ByteUtil
       return buffer.array();
    }
 
+   public static String maxString(String value, int size)
+   {
+      if (value.length() < size)
+      {
+         return value;
+      }
+      else
+      {
+         return value.substring(0, size / 2) + " ... " + value.substring(value.length() - size / 2);
+      }
+   }
+   
+   public static String bytesToHex(byte[] bytes, int groupSize)
+   {
+      char[] hexChars = new char[bytes.length * 2 + numberOfGroups(bytes, groupSize)];
+      int outPos = 0;
+      for (int j = 0; j < bytes.length; j++)
+      {
+         if (j > 0 && j % groupSize == 0)
+         {
+            hexChars[outPos++] = ' ';
+         }
+         int v = bytes[j] & 0xFF;
+         hexChars[outPos++] = hexArray[v >>> 4];
+         hexChars[outPos++] = hexArray[v & 0x0F];
+      }
+      return new String(hexChars);
+   }
+
+   private static int numberOfGroups(byte[] bytes, int groupSize)
+   {
+      int groups = bytes.length / groupSize;
+
+      if (bytes.length % groupSize == 0)
+      {
+         groups--;
+      }
+
+      return groups;
+   }
+
+
 
 
 }

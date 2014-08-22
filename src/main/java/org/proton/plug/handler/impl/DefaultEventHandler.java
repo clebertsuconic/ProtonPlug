@@ -54,7 +54,6 @@ public class DefaultEventHandler implements EventHandler
    @Override
    public void onRemoteClose(Connection connection) throws Exception
    {
-
    }
 
    @Override

@@ -46,6 +46,6 @@ public class PlainSASLResult implements SASLResult
    @Override
    public boolean isSuccess()
    {
-      return false;
+      return success;
    }
 }

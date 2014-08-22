@@ -156,10 +156,11 @@ public abstract class AbstractConnectionContext extends ProtonInitializable impl
 
 
       @Override
-      public void onClose(Connection connection)
+      public void onRemoteClose(Connection connection)
       {
          synchronized (getLock())
          {
+            connection.close();
             for (AbstractProtonSessionContext protonSession : sessions.values())
             {
                protonSession.close();
@@ -226,6 +227,7 @@ public abstract class AbstractConnectionContext extends ProtonInitializable impl
       @Override
       public void onRemoteClose(Link link) throws Exception
       {
+         link.close();
          ((ProtonDeliveryHandler) link.getContext()).close();
       }
 

@@ -34,6 +34,7 @@ import org.proton.plug.handler.Events;
 import org.proton.plug.handler.ProtonHandler;
 import org.proton.plug.context.ProtonInitializable;
 import org.proton.plug.SASLResult;
+import org.proton.plug.util.ByteUtil;
 import org.proton.plug.util.DebugInfo;
 
 /**
@@ -297,6 +298,8 @@ public class ProtonHandlerImpl extends ProtonInitializable implements ProtonHand
             byte[] dataSASL = new byte[serverSasl.pending()];
             serverSasl.recv(dataSASL, 0, dataSASL.length);
 
+            System.out.println("Working on sasl::" + ByteUtil.bytesToHex(dataSASL, 2));
+
             saslResult = mechanism.processSASL(dataSASL);
 
             if (saslResult != null && saslResult.isSuccess())
@@ -310,6 +313,7 @@ public class ProtonHandlerImpl extends ProtonInitializable implements ProtonHand
             {
                serverSasl.done(Sasl.SaslOutcome.PN_SASL_AUTH);
             }
+            serverSasl = null;
          }
          else
          {
