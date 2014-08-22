@@ -95,24 +95,24 @@ public class AbstractJMSTest
       {
          if (useHawtJMS)
          {
-//            return new JmsConnectionFactory("aaaaaaaa", "aaaaaaa", "amqp://localhost:5672");
+//            return new JmsConnectionFactory("aaaaaaaa", "aaaaaaa", "amqp://localhost:" + Constants.PORT);
             return null;
          }
          else
          {
-            return new ConnectionFactoryImpl("localhost", 5672, "aaaaaaaa", "aaaaaaa");
+            return new ConnectionFactoryImpl("localhost", Constants.PORT, "aaaaaaaa", "aaaaaaa");
          }
       }
       else
       {
          if (useHawtJMS)
          {
-//            return new JmsConnectionFactory("amqp://localhost:5672");
+//            return new JmsConnectionFactory("amqp://localhost:" + Constants.PORT);
             return null;
          }
          else
          {
-            return new ConnectionFactoryImpl("localhost", 5672, "aaaaaaaa", "aaaaaaa");
+            return new ConnectionFactoryImpl("localhost", Constants.PORT, "aaaaaaaa", "aaaaaaa");
          }
 
       }

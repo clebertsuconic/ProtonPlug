@@ -14,6 +14,7 @@
 package org.proton.plug.test.util;
 
 import org.proton.plug.test.AbstractJMSTest;
+import org.proton.plug.test.Constants;
 import org.proton.plug.test.invm.InVMTestConnector;
 import org.proton.plug.test.minimalclient.Connector;
 import org.proton.plug.test.minimalclient.SimpleAMQPConnector;
@@ -46,7 +47,7 @@ public class SimpleServerAbstractTest
       AbstractJMSTest.forceGC();
       if (!useInVM)
       {
-         server.start("127.0.0.1", 5672, useSASL);
+         server.start("127.0.0.1", Constants.PORT, useSASL);
       }
 
 

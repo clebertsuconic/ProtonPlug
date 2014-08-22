@@ -70,7 +70,7 @@ public class SimpleTest extends SimpleServerAbstractTest
    {
       Connector connector = newConnector();
       connector.start();
-      AMQPClientConnectionContext clientConnection = connector.connect("127.0.0.1", 5672);
+      AMQPClientConnectionContext clientConnection = connector.connect("127.0.0.1", Constants.PORT);
 
       clientConnection.clientOpen(useSASL ? new ClientSASLPlain("aa", "aa") : null);
 

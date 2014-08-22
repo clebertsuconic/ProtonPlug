@@ -77,7 +77,7 @@ public class ProtonTest extends AbstractJMSTest
    {
       DumbServer.clear();
       AbstractJMSTest.forceGC();
-      server.start("127.0.0.1", 5672, useSASL);
+      server.start("127.0.0.1", Constants.PORT, useSASL);
       connection = createConnection();
 
    }
@@ -253,7 +253,7 @@ public class ProtonTest extends AbstractJMSTest
    {
       SimpleAMQPConnector connector = new SimpleAMQPConnector();
       connector.start();
-      AMQPClientConnectionContext clientConnection = connector.connect("127.0.0.1", 5672);
+      AMQPClientConnectionContext clientConnection = connector.connect("127.0.0.1", Constants.PORT);
 
       clientConnection.clientOpen(new ClientSASLPlain("aa", "aa"));
 

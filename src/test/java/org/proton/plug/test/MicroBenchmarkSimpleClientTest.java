@@ -68,11 +68,11 @@ public class MicroBenchmarkSimpleClientTest extends SimpleServerAbstractTest
    {
       Connector connector1 = newConnector();
       connector1.start();
-      final AMQPClientConnectionContext clientConnection = connector1.connect("127.0.0.1", 5672);
+      final AMQPClientConnectionContext clientConnection = connector1.connect("127.0.0.1", Constants.PORT);
       clientConnection.clientOpen(useSASL ? new ClientSASLPlain("AA", "AA") : null);
 
 
-      final AMQPClientConnectionContext connectionConsumer = connector1.connect("127.0.0.1", 5672);
+      final AMQPClientConnectionContext connectionConsumer = connector1.connect("127.0.0.1", Constants.PORT);
       connectionConsumer.clientOpen(useSASL ? new ClientSASLPlain("AA", "AA") : null);
 
 

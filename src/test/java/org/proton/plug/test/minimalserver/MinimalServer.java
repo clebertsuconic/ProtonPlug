@@ -41,6 +41,7 @@ import org.proton.plug.AMQPServerConnectionContext;
 import org.proton.plug.ServerSASL;
 import org.proton.plug.context.server.ProtonServerConnectionContextFactory;
 import org.proton.plug.sasl.ServerSASLPlain;
+import org.proton.plug.test.Constants;
 import org.proton.plug.util.ByteUtil;
 import org.proton.plug.util.DebugInfo;
 
@@ -77,7 +78,7 @@ public class MinimalServer
 
    private boolean sasl;
 
-   // 5672 is the default here
+   // Constants.PORT is the default here
    private int port;
 
    public synchronized void start(String host, int port, final boolean sasl) throws Exception
@@ -181,7 +182,7 @@ public class MinimalServer
       MinimalServer server = new MinimalServer();
       try
       {
-         server.start("127.0.0.1", 5672, true);
+         server.start("127.0.0.1", Constants.PORT, true);
 
 
          while (true)
