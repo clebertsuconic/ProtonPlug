@@ -13,9 +13,9 @@
 
 package org.proton.plug.context.server;
 
-import org.proton.plug.AMQPConnectionContext;
 import org.proton.plug.AMQPConnectionContextFactory;
 import org.proton.plug.AMQPConnectionCallback;
+import org.proton.plug.AMQPServerConnectionContext;
 
 /**
  * @author Clebert Suconic
@@ -23,13 +23,13 @@ import org.proton.plug.AMQPConnectionCallback;
 
 public class ProtonServerConnectionContextFactory extends AMQPConnectionContextFactory
 {
-   private static final AMQPConnectionContextFactory theInstance = new ProtonServerConnectionContextFactory();
-   public static AMQPConnectionContextFactory getFactory()
+   private static final ProtonServerConnectionContextFactory theInstance = new ProtonServerConnectionContextFactory();
+   public static ProtonServerConnectionContextFactory getFactory()
    {
       return theInstance;
    }
 
-   public AMQPConnectionContext createConnection(AMQPConnectionCallback connectionCallback)
+   public AMQPServerConnectionContext createConnection(AMQPConnectionCallback connectionCallback)
    {
       ProtonServerConnectionContext connection = new ProtonServerConnectionContext(connectionCallback);
       return connection;

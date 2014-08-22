@@ -11,14 +11,41 @@
  * permissions and limitations under the License.
  */
 
-package org.proton.plug.handler;
+package org.proton.plug.sasl;
+
+import org.proton.plug.SASLResult;
 
 /**
  * @author Clebert Suconic
  */
 
-public interface SASLMechanism
+public class PlainSASLResult implements SASLResult
 {
-   String getName();
-   SASLResult processSASL(byte[] bytes);
+   private boolean success;
+   private String user;
+   private String password;
+
+   public PlainSASLResult(boolean success, String user, String password)
+   {
+      this.success = success;
+      this.user = user;
+      this.password = password;
+   }
+
+   @Override
+   public String getUser()
+   {
+      return user;
+   }
+
+   public String getPassword()
+   {
+      return password;
+   }
+
+   @Override
+   public boolean isSuccess()
+   {
+      return false;
+   }
 }

@@ -18,9 +18,7 @@ import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.ProtonJMessage;
-import org.proton.plug.context.AbstractProtonSessionContext;
 import org.proton.plug.context.ProtonPlugSender;
-import org.proton.plug.handler.SASLResult;
 
 /**
  * These are methods where the Proton Plug component will call your server

@@ -26,7 +26,7 @@ import org.proton.plug.AMQPConnectionCallback;
 import org.proton.plug.AMQPConnectionContext;
 import org.proton.plug.exceptions.HornetQAMQPException;
 import org.proton.plug.handler.ProtonHandler;
-import org.proton.plug.handler.SASLResult;
+import org.proton.plug.SASLResult;
 import org.proton.plug.handler.impl.DefaultEventHandler;
 
 /**

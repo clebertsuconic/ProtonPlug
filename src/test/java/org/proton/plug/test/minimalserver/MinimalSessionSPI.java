@@ -24,10 +24,9 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.ProtonJMessage;
 import org.proton.plug.AMQPSessionCallback;
 import org.proton.plug.AMQPSessionContext;
-import org.proton.plug.context.AbstractProtonSessionContext;
 import org.proton.plug.context.ProtonPlugSender;
 import org.proton.plug.context.server.ProtonServerSessionContext;
-import org.proton.plug.handler.SASLResult;
+import org.proton.plug.SASLResult;
 import org.proton.plug.util.ProtonServerMessage;
 
 /**

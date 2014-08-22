@@ -11,18 +11,21 @@
  * permissions and limitations under the License.
  */
 
-package org.proton.plug;
+package org.proton.plug.sasl;
+
+import org.proton.plug.ClientSASL;
 
 /**
+ * This is a simple implementation provided with just user/password
+ * TODO: this interface will probaby change as we are challenged with more SASL cases where there is a communication between client and server to determine the authentication
  * @author Clebert Suconic
  */
-
-public class SASLPlain extends ClientSASL
+public class ClientSASLPlain implements ClientSASL
 {
    private String username;
    private String password;
 
-   public SASLPlain(String user, String password)
+   public ClientSASLPlain(String user, String password)
    {
       this.username = user;
       this.password = password;

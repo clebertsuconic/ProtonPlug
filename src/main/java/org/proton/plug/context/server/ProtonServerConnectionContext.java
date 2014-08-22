@@ -19,24 +19,25 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import org.proton.plug.AMQPConnectionCallback;
+import org.proton.plug.AMQPServerConnectionContext;
 import org.proton.plug.AMQPSessionCallback;
+import org.proton.plug.ServerSASL;
 import org.proton.plug.context.AbstractConnectionContext;
 import org.proton.plug.context.AbstractProtonSessionContext;
 import org.proton.plug.exceptions.HornetQAMQPException;
-import org.proton.plug.handler.SASLMechanism;
 
 /**
  * @author Clebert Suconic
  */
 
-public class ProtonServerConnectionContext extends AbstractConnectionContext
+public class ProtonServerConnectionContext extends AbstractConnectionContext implements AMQPServerConnectionContext
 {
    public ProtonServerConnectionContext(AMQPConnectionCallback connectionSP)
    {
       super(connectionSP);
    }
 
-   public void createServerSASL(SASLMechanism[] saslMechanisms)
+   public void createServerSASL(ServerSASL[] saslMechanisms)
    {
       handler.createServerSASL(saslMechanisms);
    }

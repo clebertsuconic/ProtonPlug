@@ -11,13 +11,14 @@
  * permissions and limitations under the License.
  */
 
-package org.proton.plug.handler;
+package org.proton.plug;
 
 /**
  * @author Clebert Suconic
  */
 
-public interface SASLResult
+public interface ServerSASL
 {
-   boolean isSuccess();
+   String getName();
+   SASLResult processSASL(byte[] bytes);
 }

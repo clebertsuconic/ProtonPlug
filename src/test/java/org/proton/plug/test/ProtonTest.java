@@ -35,7 +35,7 @@ import org.apache.qpid.proton.message.impl.MessageImpl;
 import org.proton.plug.AMQPClientConnectionContext;
 import org.proton.plug.AMQPClientSenderContext;
 import org.proton.plug.AMQPClientSessionContext;
-import org.proton.plug.SASLPlain;
+import org.proton.plug.sasl.ClientSASLPlain;
 import org.proton.plug.test.minimalclient.SimpleAMQPConnector;
 import org.proton.plug.test.minimalserver.DumbServer;
 import org.junit.After;
@@ -255,7 +255,7 @@ public class ProtonTest extends AbstractJMSTest
       connector.start();
       AMQPClientConnectionContext clientConnection = connector.connect("127.0.0.1", 5672);
 
-      clientConnection.clientOpen(new SASLPlain("aa", "aa"));
+      clientConnection.clientOpen(new ClientSASLPlain("aa", "aa"));
 
       AMQPClientSessionContext session = clientConnection.createClientSession();
       AMQPClientSenderContext clientSender = session.createSender(address, true);

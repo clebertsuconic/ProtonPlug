@@ -17,6 +17,8 @@ import io.netty.buffer.ByteBuf;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Transport;
 import org.proton.plug.ClientSASL;
+import org.proton.plug.ServerSASL;
+import org.proton.plug.SASLResult;
 import org.proton.plug.handler.impl.ProtonHandlerImpl;
 
 /**
@@ -59,7 +61,7 @@ public interface ProtonHandler
     * To be used on server connections. To define SASL integration.
     * @param handlers
     */
-   void createServerSASL(SASLMechanism[] handlers);
+   void createServerSASL(ServerSASL[] handlers);
 
    /**
     * To return the SASL Mechanism that was successful with the connection.

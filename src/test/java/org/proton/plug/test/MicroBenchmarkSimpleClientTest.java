@@ -28,7 +28,7 @@ import org.proton.plug.AMQPClientConnectionContext;
 import org.proton.plug.AMQPClientReceiverContext;
 import org.proton.plug.AMQPClientSenderContext;
 import org.proton.plug.AMQPClientSessionContext;
-import org.proton.plug.SASLPlain;
+import org.proton.plug.sasl.ClientSASLPlain;
 import org.proton.plug.test.minimalclient.Connector;
 import org.proton.plug.test.util.SimpleServerAbstractTest;
 import org.junit.Assert;
@@ -49,7 +49,7 @@ public class MicroBenchmarkSimpleClientTest extends SimpleServerAbstractTest
    public static Collection<Object[]> data()
    {
       List<Object[]> list = Arrays.asList(new Object[][]{
-//         {Boolean.TRUE, Boolean.FALSE}, // TODO: Fix SASL and netty
+         {Boolean.TRUE, Boolean.FALSE}, // TODO: Fix SASL and netty
 //         {Boolean.FALSE, Boolean.TRUE},
 //         {Boolean.TRUE, Boolean.TRUE}, // TODO: Fix SASL and inVM
          {Boolean.FALSE, Boolean.FALSE}});
@@ -69,11 +69,11 @@ public class MicroBenchmarkSimpleClientTest extends SimpleServerAbstractTest
       Connector connector1 = newConnector();
       connector1.start();
       final AMQPClientConnectionContext clientConnection = connector1.connect("127.0.0.1", 5672);
-      clientConnection.clientOpen(useSASL ? new SASLPlain("AA", "AA") : null);
+      clientConnection.clientOpen(useSASL ? new ClientSASLPlain("AA", "AA") : null);
 
 
       final AMQPClientConnectionContext connectionConsumer = connector1.connect("127.0.0.1", 5672);
-      connectionConsumer.clientOpen(useSASL ? new SASLPlain("AA", "AA") : null);
+      connectionConsumer.clientOpen(useSASL ? new ClientSASLPlain("AA", "AA") : null);
 
 
       final int numMessages = getNumberOfMessages();

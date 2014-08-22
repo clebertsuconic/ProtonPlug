@@ -28,12 +28,12 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Sasl;
 import org.apache.qpid.proton.engine.Transport;
 import org.proton.plug.ClientSASL;
+import org.proton.plug.ServerSASL;
 import org.proton.plug.handler.EventHandler;
 import org.proton.plug.handler.Events;
 import org.proton.plug.handler.ProtonHandler;
-import org.proton.plug.handler.SASLMechanism;
 import org.proton.plug.context.ProtonInitializable;
-import org.proton.plug.handler.SASLResult;
+import org.proton.plug.SASLResult;
 import org.proton.plug.util.DebugInfo;
 
 /**
@@ -57,7 +57,7 @@ public class ProtonHandlerImpl extends ProtonInitializable implements ProtonHand
 
    private final long creationTime;
 
-   private Map<String, SASLMechanism> saslHandlers;
+   private Map<String, ServerSASL> saslHandlers;
 
    private SASLResult saslResult;
 
@@ -111,13 +111,13 @@ public class ProtonHandlerImpl extends ProtonInitializable implements ProtonHand
    }
 
    @Override
-   public void createServerSASL(SASLMechanism[] handlers)
+   public void createServerSASL(ServerSASL[] handlers)
    {
       this.serverSasl = transport.sasl();
       saslHandlers = new HashMap<>();
       String[] names = new String[handlers.length];
       int count = 0;
-      for (SASLMechanism handler : handlers)
+      for (ServerSASL handler : handlers)
       {
          saslHandlers.put(handler.getName(), handler);
          names[count++] = handler.getName();
@@ -255,6 +255,8 @@ public class ProtonHandlerImpl extends ProtonInitializable implements ProtonHand
       {
          transport.process();
 
+         checkServerSASL();
+
          if (dispatching) {
             return;
          }
@@ -288,7 +290,7 @@ public class ProtonHandlerImpl extends ProtonInitializable implements ProtonHand
       if (serverSasl != null && serverSasl.getRemoteMechanisms().length > 0)
       {
          // TODO: should we look at the first only?
-         SASLMechanism mechanism = saslHandlers.get(serverSasl.getRemoteMechanisms()[0]);
+         ServerSASL mechanism = saslHandlers.get(serverSasl.getRemoteMechanisms()[0]);
          if (mechanism != null)
          {
 
@@ -362,6 +364,21 @@ public class ProtonHandlerImpl extends ProtonInitializable implements ProtonHand
             }
          }
       }
+
+      for (EventHandler h : handlers)
+      {
+         try
+         {
+            h.onTransport(transport);
+         }
+         catch (Exception e)
+         {
+            // TODO: logs
+            e.printStackTrace();
+            connection.setCondition(new ErrorCondition());
+         }
+      }
+
    }
 
 }

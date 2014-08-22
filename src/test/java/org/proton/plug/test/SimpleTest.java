@@ -30,7 +30,7 @@ import org.proton.plug.AMQPClientConnectionContext;
 import org.proton.plug.AMQPClientReceiverContext;
 import org.proton.plug.AMQPClientSenderContext;
 import org.proton.plug.AMQPClientSessionContext;
-import org.proton.plug.SASLPlain;
+import org.proton.plug.sasl.ClientSASLPlain;
 import org.proton.plug.test.minimalclient.Connector;
 import org.proton.plug.test.util.SimpleServerAbstractTest;
 import org.junit.Test;
@@ -51,7 +51,7 @@ public class SimpleTest extends SimpleServerAbstractTest
    public static Collection<Object[]> data()
    {
       List<Object[]> list = Arrays.asList(new Object[][]{
-//         {Boolean.TRUE, Boolean.FALSE}, // TODO: Fix SASL and netty
+         {Boolean.TRUE, Boolean.FALSE}, // TODO: Fix SASL and netty
          {Boolean.FALSE, Boolean.TRUE},
 //         {Boolean.TRUE, Boolean.TRUE}, // TODO: Fix SASL and inVM
          {Boolean.FALSE, Boolean.FALSE}});
@@ -72,7 +72,7 @@ public class SimpleTest extends SimpleServerAbstractTest
       connector.start();
       AMQPClientConnectionContext clientConnection = connector.connect("127.0.0.1", 5672);
 
-      clientConnection.clientOpen(useSASL ? new SASLPlain("aa", "aa") : null);
+      clientConnection.clientOpen(useSASL ? new ClientSASLPlain("aa", "aa") : null);
 
       AMQPClientSessionContext session = clientConnection.createClientSession();
       AMQPClientSenderContext clientSender = session.createSender("Test", true);

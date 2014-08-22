@@ -14,13 +14,11 @@
 package org.proton.plug;
 
 /**
- * TODO: remove this
- * Client SASL is actually more complex than this. this is a temporary hack so I can keep doing my dev
- *        Wildfly has a complete implementation of SASL much more complete than this.
  * @author Clebert Suconic
  */
-public abstract class ClientSASL
+public interface ClientSASL
 {
-   public abstract byte[] getBytes();
-   public abstract String getName();
+   byte[] getBytes();
+
+   String getName();
 }

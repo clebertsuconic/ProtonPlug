@@ -37,7 +37,10 @@ import io.netty.util.ResourceLeakDetector;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
 import org.proton.plug.AMQPConnectionContext;
+import org.proton.plug.AMQPServerConnectionContext;
+import org.proton.plug.ServerSASL;
 import org.proton.plug.context.server.ProtonServerConnectionContextFactory;
+import org.proton.plug.sasl.ServerSASLPlain;
 import org.proton.plug.util.ByteUtil;
 import org.proton.plug.util.DebugInfo;
 
@@ -130,7 +133,7 @@ public class MinimalServer
    class ProtocolDecoder extends ByteToMessageDecoder
    {
 
-      AMQPConnectionContext connection;
+      AMQPServerConnectionContext connection;
 
 
       public ProtocolDecoder()
@@ -142,6 +145,10 @@ public class MinimalServer
       {
          super.channelActive(ctx);
          connection = ProtonServerConnectionContextFactory.getFactory().createConnection(new MinimalConnectionSPI(ctx.channel()));
+         if (sasl)
+         {
+            connection.createServerSASL(new ServerSASL[]{new ServerSASLPlain()});
+         }
          //ctx.read();
       }
 
