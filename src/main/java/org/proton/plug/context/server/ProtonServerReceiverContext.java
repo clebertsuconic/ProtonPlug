@@ -116,6 +116,7 @@ public class ProtonServerReceiverContext extends AbstractProtonReceiverContext
 
          if (!delivery.isReadable())
          {
+            System.err.println("!!!!! Readable!!!!!!!");
             return;
          }
 
@@ -126,9 +127,9 @@ public class ProtonServerReceiverContext extends AbstractProtonReceiverContext
             {
                readDelivery(receiver, buffer);
 
-               sessionSPI.serverSend(receiver, delivery, address, delivery.getMessageFormat(), buffer);
-
                receiver.advance();
+
+               sessionSPI.serverSend(receiver, delivery, address, delivery.getMessageFormat(), buffer);
                delivery.disposition(Accepted.getInstance());
                delivery.settle();
 

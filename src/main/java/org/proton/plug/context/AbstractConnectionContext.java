@@ -28,6 +28,8 @@ import org.proton.plug.exceptions.HornetQAMQPException;
 import org.proton.plug.handler.ProtonHandler;
 import org.proton.plug.SASLResult;
 import org.proton.plug.handler.impl.DefaultEventHandler;
+import org.proton.plug.util.ByteUtil;
+import org.proton.plug.util.DebugInfo;
 
 /**
  * Clebert Suconic
@@ -57,6 +59,11 @@ public abstract class AbstractConnectionContext extends ProtonInitializable impl
    @Override
    public void inputBuffer(ByteBuf buffer)
    {
+      if (DebugInfo.debug)
+      {
+         ByteUtil.debugFrame("Buffer Received ", buffer);
+      }
+
       handler.inputBuffer(buffer);
    }
 

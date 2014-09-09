@@ -156,11 +156,6 @@ public class MinimalServer
       @Override
       protected void decode(final ChannelHandlerContext ctx, ByteBuf byteIn, List<Object> out) throws Exception
       {
-         if (DebugInfo.debug)
-         {
-            ByteUtil.debugFrame("Buffer Received ", byteIn);
-         }
-
          connection.inputBuffer(byteIn);
          ctx.flush();
 //         if (connection.capacity() > 0)

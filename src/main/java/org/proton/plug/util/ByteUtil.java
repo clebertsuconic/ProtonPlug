@@ -31,7 +31,7 @@ public class ByteUtil
 
       try
       {
-         System.err.println(message + "\n" + ByteUtil.formatGroup(ByteUtil.bytesToHex(frame), 4, 16));
+         System.out.println(message + "\n" + ByteUtil.formatGroup(ByteUtil.bytesToHex(frame), 8, 16));
       }
       catch (Exception e)
       {

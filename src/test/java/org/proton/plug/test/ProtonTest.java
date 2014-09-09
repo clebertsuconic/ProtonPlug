@@ -45,6 +45,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.proton.plug.util.ByteUtil;
 
 /**
  * @author <a href="mailto:andy.taylor@jboss.org">Andy Taylor</a>
@@ -203,6 +204,62 @@ public class ProtonTest extends AbstractJMSTest
       connection.close();
    }
 
+   @Test
+   public void testSimpleBinary() throws Throwable
+   {
+      final int numMessages = 5;
+      long time = System.currentTimeMillis();
+      final QueueImpl queue = new QueueImpl(address);
+
+      Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+      byte[] bytes = new byte[0xf + 1];
+      for (int i = 0; i <= 0xf; i++)
+      {
+         bytes[i] = (byte)i;
+      }
+
+
+      MessageProducer p = session.createProducer(queue);
+      for (int i = 0; i < numMessages; i++)
+      {
+         BytesMessage message = session.createBytesMessage();
+
+         message.writeBytes(bytes);
+         message.setIntProperty("count", i);
+         p.send(message);
+      }
+
+
+      session.close();
+
+
+      Session sessionConsumer = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+      final MessageConsumer consumer = sessionConsumer.createConsumer(queue);
+
+      for (int i = 0 ; i < numMessages; i++)
+      {
+         BytesMessage m = (BytesMessage)consumer.receive(5000);
+
+         System.out.println("length " + m.getBodyLength());
+         Assert.assertNotNull("Could not receive message count=" + i + " on consumer", m);
+
+         m.reset();
+
+         long size = m.getBodyLength();
+         byte[] bytesReceived = new byte[(int)size];
+         m.readBytes(bytesReceived);
+
+
+         System.out.println("Received " + ByteUtil.bytesToHex(bytesReceived, 1));
+
+         Assert.assertArrayEquals(bytes, bytesReceived);
+      }
+
+//      assertEquals(0, q.getMessageCount());
+      long taken = (System.currentTimeMillis() - time) / 1000;
+      System.out.println("taken = " + taken);
+   }
 
    @Test
    public void testMapMessage() throws Exception
