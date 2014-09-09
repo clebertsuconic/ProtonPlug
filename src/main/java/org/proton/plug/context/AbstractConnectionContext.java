@@ -192,6 +192,11 @@ public abstract class AbstractConnectionContext extends ProtonInitializable impl
       @Override
       public void onClose(Session session) throws Exception
       {
+      }
+
+      @Override
+      public void onRemoteClose(Session session) throws Exception
+      {
          synchronized (getLock())
          {
             session.close();
@@ -204,12 +209,6 @@ public abstract class AbstractConnectionContext extends ProtonInitializable impl
             sessions.remove(session);
             session.setContext(null);
          }
-      }
-
-      @Override
-      public void onRemoteClose(Session session) throws Exception
-      {
-         onClose(session);
       }
 
       @Override

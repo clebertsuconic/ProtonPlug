@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.qpid.amqp_1_0.jms.impl.QueueImpl;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.Properties;
 import org.apache.qpid.proton.message.Message;
@@ -188,6 +189,20 @@ public class ProtonTest extends AbstractJMSTest
       connection.close();
 //      assertEquals(0, q.getMessageCount());
    }
+
+
+
+   @Test
+   public void testSimpleCreateSessionAndClose() throws Throwable
+   {
+      final QueueImpl queue = new QueueImpl(address);
+
+      Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+      Thread.sleep(1000);
+      session.close();
+      connection.close();
+   }
+
 
    @Test
    public void testMapMessage() throws Exception
