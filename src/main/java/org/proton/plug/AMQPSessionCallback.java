@@ -58,7 +58,7 @@ public interface AMQPSessionCallback
    void close();
 
 
-   void ack(Object brokerConsumer, Object message);
+   void ack(Object brokerConsumer, Object message) throws Exception;
 
    /**
     * @param brokerConsumer
@@ -67,7 +67,7 @@ public interface AMQPSessionCallback
     *                     client's cache.
     *                     in some implementations you could call this failed
     */
-   void cancel(Object brokerConsumer, Object message, boolean updateCounts);
+   void cancel(Object brokerConsumer, Object message, boolean updateCounts) throws Exception;
 
 
    void resumeDelivery(Object consumer);
