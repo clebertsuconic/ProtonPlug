@@ -88,6 +88,12 @@ public final class Events
          case LINK_FINAL:
             handler.onFinal(event.getLink());
             break;
+         case LINK_DETACH:
+            handler.onDetach(event.getLink());
+            break;
+         case LINK_REMOTE_DETACH:
+            handler.onRemoteDetach(event.getLink());
+            break;
          case TRANSPORT:
             handler.onTransport(event.getTransport());
             break;

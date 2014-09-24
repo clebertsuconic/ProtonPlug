@@ -140,6 +140,19 @@ public class DefaultEventHandler implements EventHandler
 
    }
 
+
+   @Override
+   public void onRemoteDetach(Link link) throws Exception
+   {
+
+   }
+
+   @Override
+   public void onDetach(Link link) throws Exception
+   {
+
+   }
+
    @Override
    public void onDelivery(Delivery delivery) throws Exception
    {

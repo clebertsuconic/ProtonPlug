@@ -237,6 +237,12 @@ public abstract class AbstractConnectionContext extends ProtonInitializable impl
          ((ProtonDeliveryHandler) link.getContext()).close();
       }
 
+
+      public void onRemoteDetach(Link link) throws Exception
+      {
+         link.detach();
+      }
+
       public void onDelivery(Delivery delivery) throws Exception
       {
          ProtonDeliveryHandler handler = (ProtonDeliveryHandler) delivery.getLink().getContext();

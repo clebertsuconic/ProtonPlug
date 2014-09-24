@@ -51,6 +51,8 @@ public interface EventHandler
    void onRemoteClose(Link link) throws Exception;
    void onFlow(Link link) throws Exception;
    void onFinal(Link link) throws Exception;
+   void onRemoteDetach(Link link) throws Exception;
+   void onDetach(Link link) throws Exception;
 
    void onDelivery(Delivery delivery) throws Exception;
    void onTransport(Transport transport) throws Exception;
